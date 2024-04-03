@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_apiKey,
-  authDomain: process.env.NEXT_PUBLIC_authDomain,
-  projectId: process.env.NEXT_PUBLIC_projectId,
-  storageBucket: process.env.NEXT_PUBLIC_storageBucket,
-  messagingSenderId: process.env.NEXT_PUBLIC_messagingSenderId,
-  appId: process.env.NEXT_PUBLIC_appId,
-  measurementId: process.env.NEXT_PUBLIC_measurementId
+  apiKey: "AIzaSyA_ZVKIWRKfVPS6JZycCetRCjZ1l7fCwH0",
+  authDomain: "vakaks-c539f.firebaseapp.com",
+  projectId: "vakaks-c539f",
+  storageBucket: "vakaks-c539f.appspot.com",
+  messagingSenderId: "320626518278",
+  appId: "1:320626518278:web:f0549a5b0ec9c9de355687",
+  measurementId: "G-DF9MQHFD1P"
 };
 
 export const app = initializeApp(firebaseConfig);

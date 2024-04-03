@@ -1,7 +1,7 @@
 
 export default function page() {
   return (
-    <main>
+    <main className=''>
       <h1>VAKAKS BLOG</h1>
     </main>
   );
