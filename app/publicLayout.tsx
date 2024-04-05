@@ -12,7 +12,7 @@ export default function PublicLayout({ children }: Props) {
       <Header />
       <Image src={bannerImg} alt='hero' 
           width={1920} height={1270} 
-            className='absolute min-h-[35rem] h-[50vh] mb-35 w-full rounded-b-3xl -z-0 top-0 bottom-0 bg-red-700 left-0 right-0 object-cover object-center' />
+            className='absolute min-h-[35rem] h-[50vh] mb-35 w-full rounded-b-3xl -z-0 top-0 bottom-0 left-0 right-0 object-cover object-center' />
         {children}
     </main>
   )
