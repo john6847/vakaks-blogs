@@ -2,69 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  --title-size: clamp(4rem, -3.1111rem + 19.5556vw, 14rem);
+  --vakaks-size: clamp(33vw, -4.50rem + 42.5556vw, 21.5rem);
+  --big-title-size: clamp(4rem, -3.1111rem + 28.5vw, 23rem);
+  --text-size: clamp(1.4rem, -0.1111rem + 1.5556vw, 2rem);
+  --primary-color: 9, 94%, 47%;
+  --bg-color: 0, 0%, 15%;
+  --secondary-color: 44, 100%, 92%;
+  --h1-size: clamp(2rem, 2.5vw, 2.5rem);
+  --h2-size: clamp(1.5rem, 2vw, 2rem);
+  --h3-size: clamp(1.25rem, 1.75vw, 1.5rem);
+  --h4-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-
+    --jodit-background: 0 0% 100%;
+    --jodit-foreground:  0 0% 10%;
+    --jodit-icon: 0, 0%, 20%;
+    --foreground: 0, 0%, 20%;
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-
     --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-
+    --primary-foreground: 0, 0%, 100%;
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
-
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
-
     --accent: 220 14.3% 95.9%;
     --accent-foreground: 220.9 39.3% 11%;
-
-    --destructive: 0 84.2% 60.2%;
+    --destructive: var(--primary-color);
     --destructive-foreground: 210 20% 98%;
-
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
-
+    --ring: 0, 0%, 0%, 0;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-
+    --background: 0, 0%, 10%;
+    --jodit-background: 0 0% 7%;
+    --jodit-foreground:  0 0% 100%;
+    --jodit-icon: 44, 100%, 92%;
+    --foreground: 44, 100%, 95%;
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
-
-    --popover: 224 71.4% 4.1%;
+    --popover:  0, 0%, 12%;
     --popover-foreground: 210 20% 98%;
-
     --primary: 210 20% 98%;
     --primary-foreground: 220.9 39.3% 11%;
-
-    --secondary: 215 27.9% 16.9%;
+    --secondary: 0, 0%, 23%;
     --secondary-foreground: 210 20% 98%;
-
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-
-    --accent: 215 27.9% 16.9%;
+    --muted: 0, 0%, 23%;
+    --muted-foreground: 44, 100%, 92%, 0.234;
+    --accent: 0, 0%, 15%;
     --accent-foreground: 210 20% 98%;
-
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0, 67%, 63%;
     --destructive-foreground: 210 20% 98%;
-
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
+    --border: 0, 0%, 23%;
+    --input: 0, 0%, 23%;
+    --ring: 0, 0%, 0%, 0;
   }
 }
+
 
 @layer base {
   * {
@@ -75,12 +81,178 @@
   }
 }
 
+
+.text-big-title {
+  font-size: var(--big-title-size);
+  line-height: calc(var(--big-title-size) * .95);
+}
+
+.text-title {
+  font-size: var(--title-size);
+  line-height: calc(var(--title-size) * .8);
+}
+
+.font-geist-sans {
+  font-family: var(--font-geist-sans);
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono);
+}
+
 html, body {
   padding: 0;
   margin: 0;
   font-family: var(--font-inter);
+  font-size: 1rem;
+  min-height: 100vh;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+  font-size: var(--h1-size);
+  font-weight: 700;
   font-family: var(--font-anton);
 }
+
+h2 {
+  font-size: var(--h2-size);
+}
+
+h3 {
+  font-size: var(--h3-size);
+}
+
+h4 {
+  font-size: var(--h4-size);
+}
+
+
+
+h2, h3, h4, h5, h6 {
+  font-family: var(--font-geist-sans);
+}
+
+
+
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+}
+
+.shadow-0 {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* JODIT CSS */
+
+.jodit-toolbar__box, .jodit-container:not(.jodit_inline) {
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl((--border)) !important;
+  border-radius: var(--radius) var(--radius) 0 0 !important;
+  overflow: hidden !important;
+  color: hsl(var(--foreground)) !important;
+  border-radius: .3rem !important;
+}
+
+.jodit-container .jodit-icon {
+  width: .8rem !important;
+  height: .8rem !important;
+}
+
+.jodit-container .jodit-icon , .jodit-toolbar-button__icon {
+  stroke: hsl(var(--jodit-icon)) !important;
+  color: hsl(var(--jodit-icon)) !important;
+  fill: hsl(var(--jodit-icon)) !important;
+}
+
+.jodit-toolbar-button__trigger:hover svg {
+  fill: hsl(var(--accent)) !important;
+}
+
+.jodit-toolbar-button__button:hover {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.jodit-toolbar-button__button[disabled] {
+  opacity: 0.8 !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.jodit-container:not(.jodit_inline) .jodit-workplace {
+  background-color: hsl(var(--jodit-background)) !important;
+  color: hsl(var(--jodit-foreground)) !important;
+  height: min(25rem, 35rem) !important;
+}
+
+.jodit-dialog__panel {
+  background-color: hsl(var(--popover)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+.jodit-toolbar-button__trigger svg {
+  fill: hsl(var(--foreground)) !important;
+  opacity: 0.8 !important;
+}
+
+.jodit-status-bar, .jodit-add-new-line {
+  display: none !important;
+}
+
+.jodit-ui-button {
+  background-color: hsl(var(--jodit-background)) !important;
+  color: hsl(var(--jodit-foreground)) !important;
+  border-radius: .3rem !important;
+}
+
+.jodit-popup__content {
+  background: hsl(var(--popover)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+}
+.jodit-toolbar-button__text {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* END JODIT CSS */

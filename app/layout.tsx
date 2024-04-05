@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { Inter, Anton } from "next/font/google";
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { ThemeProvider } from "@/components/theme-provider"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import { cn } from '@/lib/utils';
+import { Header } from '@/components/header/header';
+import OtherProvider from '@/components/other-provider';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,17 +35,19 @@ export const metadata: Metadata = {
     }
   ],
   keywords: [
-    "web development", 
-  "programming", "javascript", 
-  "react", "next.js", "css", 
-  "html", "software development", 
-  "technology", "blog", "vakaks",
-  "joseph watson", "john jerry cosky bien-aime",
-  "joe watson", "cosky bien aime",
-  "joe watson sbf", "jerry bien aime",
-  "sbf", "joe"
-],
+    "web development",
+    "programming", "javascript",
+    "react", "next.js", "css",
+    "html", "software development",
+    "technology", "blog", "vakaks",
+    "joseph watson", "john jerry cosky bien-aime",
+    "joe watson", "cosky bien aime",
+    "joe watson sbf", "jerry bien aime",
+    "sbf", "joe"
+  ],
 };
+
+const isDevMode = process.env.NODE_ENV === "development";
 
 export default function RootLayout({
   children,
@@ -46,12 +55,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={
         cn(
-          inter.variable, anton.variable,
+          inter.variable, anton.variable, GeistSans.variable, GeistMono.variable,
         )
-      }>{children}</body>
+      }>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange>
+            <Header />
+            
+          {children}
+          <OtherProvider/>
+        </ThemeProvider>
+
+        {
+          !isDevMode && (
+            <>
+              <SpeedInsights />
+              <Analytics />
+            </>
+          )
+        }
+      </body>
     </html>
   );
 }

@@ -18,6 +18,15 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        "sans": "var(--font-geist-sans)",
+        "mono": "var(--font-geist-mono)",
+      },
+      fontSize: {
+        "big-title": "",
+        "title": "",
+        "vakaks": "",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

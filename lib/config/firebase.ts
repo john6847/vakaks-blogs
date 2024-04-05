@@ -1,19 +1,27 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import { collection, doc, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA_ZVKIWRKfVPS6JZycCetRCjZ1l7fCwH0",
-  authDomain: "vakaks-c539f.firebaseapp.com",
-  projectId: "vakaks-c539f",
-  storageBucket: "vakaks-c539f.appspot.com",
-  messagingSenderId: "320626518278",
-  appId: "1:320626518278:web:f0549a5b0ec9c9de355687",
-  measurementId: "G-DF9MQHFD1P"
+  apiKey: process.env.apiKey as string,
+  authDomain: process.env.authDomain as string,
+  projectId: process.env.projectId as string,
+  storageBucket: process.env.storageBucket as string,
+  messagingSenderId: process.env.messagingSenderId as string,
+  appId: process.env.appId as string,
+  measurementId: process.env.measurementId as string,
 };
 
 export const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app)
 export const db = getFirestore(app)
 export const auth = getAuth(app)
+
+
+
+export const generateId=(collectionName:string)=> {
+  const ref = collection(db, collectionName)
+  const docRef = doc(ref)
+  return docRef.id
+}
