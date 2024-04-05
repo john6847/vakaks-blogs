@@ -32,7 +32,7 @@ export default async function page() {
 
 
   return (
-    <main className='2xl:container mx-auto sm:p-8 p-4'>
+    <main className='2xl:container mx-auto sm:p-8 p-4 mt-[30rem]'>
       <h1 className='text-7xl font-semibold text-center'>VAKAKS BLOG</h1>
       <AddBlogForm handleSubmit={handleSubmit}/>
     </main>

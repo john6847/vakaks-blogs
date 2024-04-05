@@ -51,6 +51,7 @@ export function CustomPagination({ className, limit = 13 }: Props) {
 
       <Pagination>
         <PaginationContent>
+          
           <PaginationItem className='cursor-pointer'>
             <PaginationPrevious 
             onClick={handlePrevious}

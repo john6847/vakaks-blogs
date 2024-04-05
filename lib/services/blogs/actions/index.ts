@@ -1,6 +1,6 @@
 "use server"
 import { DbCollection } from '@/lib/config/collections';
-import { collection, doc, getDoc, getDocs, limit, 
+import { collection, doc, getDoc, getDocs, getDocsFromServer, limit, 
   orderBy, query, setDoc, startAfter, Timestamp } 
   from 'firebase/firestore';
 import { Blog } from '../type';
@@ -51,4 +51,11 @@ export const getBlog = async (id: string): Promise<Blog> => {
   const docRef = doc(db, DbCollection.BLOGS, id);
   const docSnap = await getDoc(docRef);
   return docSnap.data() as Blog;
+}
+
+
+export const numberOfBlogs = async (): Promise<number> => {
+  const ref = collection(db, DbCollection.BLOGS);
+  const documentSnapshots = await getDocsFromServer(ref);
+  return documentSnapshots.size;
 }

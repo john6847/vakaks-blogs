@@ -4,9 +4,9 @@ import Link from 'next/link'
 
 export const Header = () => {
   return (
-    <header className='relative sm:p-8 p-4'>
-      <div className='flex justify-between gap-8 2xl:container 2xl:mx-auto w-full'>
-        <h1 className='text-4xl text-destructive font-semibold'>
+    <header className='relative sm:m-8 m-4 p-6 2xl:container 2xl:mx-auto rounded-3xl bg-background/60 backdrop-blur-lg z-50'>
+      <div className='flex justify-between gap-8 w-full'>
+        <h1 className='text-4xl text-destructive dark:text-foreground font-semibold'>
         <Link href='/'>VAKAKS BLOG</Link>
         </h1>
         <nav className='flex gap-8 items-center'>

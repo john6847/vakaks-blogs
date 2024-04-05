@@ -87,6 +87,10 @@
   line-height: calc(var(--big-title-size) * .95);
 }
 
+.transition-3 {
+  transition: all .3s ease-in-out
+}
+
 .text-title {
   font-size: var(--title-size);
   line-height: calc(var(--title-size) * .8);

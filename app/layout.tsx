@@ -9,6 +9,7 @@ import "./globals.css";
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header/header';
 import OtherProvider from '@/components/other-provider';
+import PublicLayout from './publicLayout';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -66,9 +67,9 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-            <Header />
-            
-          {children}
+            <PublicLayout>
+              {children}
+            </PublicLayout>
           <OtherProvider/>
         </ThemeProvider>
 

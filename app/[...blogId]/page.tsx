@@ -14,7 +14,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
       <div className='min-h-[20rem] max-h-[30rem] -mt-8 rounded-lg overflow-hidden relative'>
         <Image loading='lazy'
           width={1920} height={1080}
-          src={blog.cover} alt={blog.title}
+          src={blog?.cover} alt="cover image"
           className='w-full h-full blur-sm min-h-[30rem] max-h-[25rem] object-cover' />
 
         <div className='absolute bottom-[0%] z-10 left-0 right-0'>
