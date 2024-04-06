@@ -57,6 +57,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-4245479224018715"/>
+      </head>
       <body className={
         cn(
           inter.variable, anton.variable, GeistSans.variable, GeistMono.variable,
@@ -67,10 +70,10 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-            <PublicLayout>
-              {children}
-            </PublicLayout>
-          <OtherProvider/>
+          <PublicLayout>
+            {children}
+          </PublicLayout>
+          <OtherProvider />
         </ThemeProvider>
 
         {

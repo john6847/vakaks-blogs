@@ -86,7 +86,12 @@
 }
 
 .html-content p {
-  word-wrap: break-word ;
+  word-wrap: break-word;
+}
+
+.html-content * {
+  font-size: 1.1rem;
+  font-family: var(--font-inter);
 }
 
 

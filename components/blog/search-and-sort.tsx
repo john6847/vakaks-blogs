@@ -21,10 +21,9 @@ export default function SearchAndSort() {
     return params.toString()
   }, [searchParams])
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: any) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const search = formData.get('search') as string
+    const search = e.target.value
     if (!search) {
       const params = new URLSearchParams(searchParams?.toString())
       params.delete('search')
@@ -32,6 +31,16 @@ export default function SearchAndSort() {
       return
     }
     router.push(`${pathname}?${createQueryString('search', search)}`, { scroll: false })
+  }
+
+  const handleCategory = (category: string) => {
+    if (category === 'all' || !category) {
+      const params = new URLSearchParams(searchParams?.toString())
+      params.delete('category')
+      router.push(`${pathname}?${params.toString()}`, { scroll: false })
+      return
+    }
+    router.push(`${pathname}?${createQueryString('category', category)}`, { scroll: false })
   }
 
   const handleSort = (sort: string) => {
@@ -58,7 +67,9 @@ export default function SearchAndSort() {
         </div>
         <div className='flex gap-4 items-center'>
           <span className='block text-sm font-semibold'>Category:</span>
-          <select name="category" id="category" className='bg-accent text-accent-foreground'>
+          <select name="category" id="category" 
+            value={searchParams?.get('category') || 'all'} onChange={(e) => handleCategory(e.target.value)}
+          className='bg-accent text-accent-foreground'>
             <option value="all">All</option>
             <option value="nextjs">NextJS</option>
             <option value="react">React</option>
@@ -71,6 +82,7 @@ export default function SearchAndSort() {
         <span className='block text-sm font-semibold'>Search:</span>
         <input type="text"
           placeholder='Search Blogs'
+          onChange={handleSearch}
          className='bg-accent text-accent-foreground border-foreground border-opacity-50 border px-2 py-0 outline-none rounded-sm' />
       </div>
     </div>
