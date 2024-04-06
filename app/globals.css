@@ -142,7 +142,12 @@ h2, h3, h4, h5, h6 {
 
 .grid-responsive {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+
+.grid-responsive-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
 }
 
 .shadow-0 {

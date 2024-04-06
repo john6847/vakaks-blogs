@@ -1,4 +1,6 @@
 {
-  "recommendations": [],
+  "recommendations": [
+    "bradlc.vscode-tailwindcss", "dsznajder.es7-react-js-snippets", "mgmcdermott.vscode-language-babel", "WallabyJs.console-ninja"
+  ],
   "unwantedRecommendations": []
 }

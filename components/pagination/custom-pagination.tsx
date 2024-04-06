@@ -38,12 +38,12 @@ export function CustomPagination({ className, limit = 13 }: Props) {
       router.push(`${pathname}`)
       return  
     }
-    router.push(`${pathname}?${createQueryString('page', page.toString())}`)
+    router.push(`${pathname}?${createQueryString('page', page.toString())}`, { scroll: false })
   }
 
   const handleNext = () => {
     const page = currentPage && parseInt(currentPage) < limit ? parseInt(currentPage) + 1 : limit
-    router.push(`${pathname}?${createQueryString('page', page.toString())}`)
+    router.push(`${pathname}?${createQueryString('page', page.toString())}`, { scroll: false })
   }
 
   return (

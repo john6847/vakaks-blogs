@@ -1,7 +1,6 @@
 "use client"
 import React from 'react';
 import JoditEditor from 'jodit-react';
-import sanitizeHtml from 'sanitize-html';
 
 type HtmlEditorProps = {
   placeholder?: string;

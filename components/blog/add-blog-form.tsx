@@ -13,11 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import dynamic from 'next/dynamic'
 import { Textarea } from '../ui/textarea'
 import { toast } from 'react-toastify'
+import HtmlEditor from '@/components/htmlEditor/html-editor'
 
-const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false })
+/* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
 
 const formSchema = z.object({
   title: z.string().min(3, {
