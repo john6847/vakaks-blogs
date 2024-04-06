@@ -28,6 +28,7 @@ export const saveBlog = async (blog: Blog) => {
 
 
 export const getBlogs = async (perPage?: number): Promise<Blog[]> => {
+  
   const first = query(collection(db, DbCollection.BLOGS), orderBy("publishedAt"), limit(perPage || 13));
   const documentSnapshots = await getDocs(first);
 

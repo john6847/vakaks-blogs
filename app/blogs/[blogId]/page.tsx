@@ -1,18 +1,20 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import { getBlog } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
 import Image from 'next/image'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export default async function page({ params }: { params: { blogId: string } }) {
 
-  const id = params.blogId[0] || ''
+  const id = params?.blogId || ''
   const blog: Blog = await getBlog(id)
 
 
   return (
-    <>
+    <Suspense fallback={<LoadindSkeleton />}>
+      {blog ? <div className='2xl:container 2xl:mx-auto py-8 space-y-8 sm:p-8 p-4'>
 
-      {blog && <div className='2xl:container 2xl:mx-auto py-8 space-y-8 sm:p-8 p-4'>
+
         <div className='min-h-[20rem] max-h-[30rem] -mt-8 rounded-lg overflow-hidden relative'>
           <Image loading='lazy'
             width={1920} height={1080}
@@ -50,11 +52,31 @@ export default async function page({ params }: { params: { blogId: string } }) {
           </blockquote>
         </div>
 
-        <div className='sm:p-8 p-4'>
-          <div className='' dangerouslySetInnerHTML={{ __html: blog.content }} />
-        </div>
 
-      </div>}
-    </>
+        <div className='html-content' dangerouslySetInnerHTML={{ __html: blog.content }} />
+
+
+      </div>
+        : <div className='text-center my-16'>
+          <h1 className='text-3xl font-semibold'>Blog not found</h1>
+          <p className='text-lg'>The blog you are looking for does not exist</p>
+        </div>
+      }
+    </Suspense>
+  )
+}
+
+
+
+const LoadindSkeleton = () => {
+  return (
+    <div className="flex flex-col space-y-8 mx-4 2xl:container 2xl:mx-auto">
+      <Skeleton className="min-h-[30rem] max-h-[25rem] rounded-xl" />
+      <Skeleton className="h-32 rounded-xl mx-auto w-10/12" />
+      <div className="space-y-2 sm:mx-16">
+        <Skeleton className="min-h-[20rem] w-full" />
+        <Skeleton className="h-[40rem] w-full" />
+      </div>
+    </div>
   )
 }

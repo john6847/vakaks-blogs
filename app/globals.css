@@ -81,6 +81,14 @@
   }
 }
 
+.html-content code, .html-content kbd, .html-content samp, .html-content pre {
+  overflow: scroll;
+}
+
+.html-content p {
+  word-wrap: break-word ;
+}
+
 
 .text-big-title {
   font-size: var(--big-title-size);
@@ -93,7 +101,7 @@
 
 .text-title {
   font-size: var(--title-size);
-  line-height: calc(var(--title-size) * .8);
+  line-height: calc(var(--title-size) * 1.1);
 }
 
 .font-geist-sans {
@@ -145,10 +153,6 @@ h2, h3, h4, h5, h6 {
   grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
 }
 
-.grid-responsive-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-}
 
 .shadow-0 {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
