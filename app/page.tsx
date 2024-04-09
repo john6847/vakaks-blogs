@@ -5,6 +5,7 @@ import bannerImg from '@/public/images/software-developer-0.jpeg';
 import BlogSection from './_components/blog-section';
 import FilterByCategory from '@/components/blog/filter-by-category';
 import BlogBanner from './_components/blog-banner';
+import NewsLetter from '@/components/newsletter/news-letter';
 
 
 
@@ -30,15 +31,19 @@ export default async function page({ searchParams }: SearchParams) {
 
       <main className='relative z-[60] 2xl:container 2xl:mx-auto bg-background md:mx-10 m-2 space-y-8 rounded-3xl mt-[25rem] sm:px-8 shadow-0 p-4'>
         <BlogBanner blogs={blogs}
-          title={<span> Welcome to <strong className='italic  text-destructive mx-1'>VAKAKS</strong> Blog </span>}
+          title={<span> Welcome to <strong className='underline decoration-clone decoration-destructive text-destructive '>VAKAKS</strong> Blog </span>}
         />
       </main>
 
       <main className='2xl:container mx-auto sm:p-16 p-4'>
-        <BlogSection blogs={blogs} title='Latest Blogs'>
+        <BlogSection quantity={8} blogs={blogs} title='Latest Blogs'>
           <FilterByCategory navLinks={navLinks} />
         </BlogSection>
       </main>
+
+      <section className='mb-16'>
+        <NewsLetter />
+      </section>
 
     </>
   );

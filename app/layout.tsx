@@ -7,7 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import { cn } from '@/lib/utils';
-import { Header } from '@/components/header/header';
 import OtherProvider from '@/components/other-provider';
 import PublicLayout from './publicLayout';
 
@@ -67,7 +66,7 @@ export default function RootLayout({
       }>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange>
           <PublicLayout>

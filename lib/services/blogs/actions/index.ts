@@ -1,34 +1,39 @@
 "use server"
 import { DbCollection } from '@/lib/config/collections';
-import { collection, doc, getDoc, getDocs, getDocsFromServer, limit, 
-  orderBy, query, setDoc, startAfter, Timestamp } 
+import {
+  collection, doc, getDoc, getDocs, getDocsFromServer, limit,
+  orderBy, query, setDoc, startAfter, Timestamp
+}
   from 'firebase/firestore';
-import { Blog } from '../type';
 import { db, generateId } from '@/lib/config/firebase';
 import { getAuthor } from '../../users';
+import { saveCategory } from '../../categories/actions';
+import { Blog, BlogStatus } from '../type';
 
-export const saveBlog = async (blog: Blog) => {
+export const saveBlog = async (blogDto: any) => {
   const refId = generateId(DbCollection.BLOGS);
 
-  blog.reactions = {
-    LIKE: 0,
-    LOVE: 0,
-    DISLIKE: 0
-  };
-
-  await setDoc(doc(db, DbCollection.BLOGS, refId), {
-    ...blog,
+  const blog: Blog = {
+    ...blogDto,
     id: refId,
     author: getAuthor(),
+    reactions: {
+      LIKE: 0,
+      LOVE: 0,
+      DISLIKE: 0
+    },
+    status: BlogStatus.PUBLISHED,
     publishedAt: Timestamp.now(),
     updatedAt: Timestamp.now()
-  });
+  }
 
+  await setDoc(doc(db, DbCollection.BLOGS, refId), blog);
+  await saveCategory(blog.categories);
 }
 
 
 export const getBlogs = async (perPage?: number): Promise<Blog[]> => {
-  
+
   const first = query(collection(db, DbCollection.BLOGS), orderBy("publishedAt"), limit(perPage || 13));
   const documentSnapshots = await getDocs(first);
 

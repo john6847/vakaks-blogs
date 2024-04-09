@@ -13,16 +13,16 @@ export default function BlogCard({ blog, className }: Props) {
   return (
     <div className={cn('bg-accent rounded-xl p-2 overflow-hidden', className)}>
       <Link href={`/blogs/${blog.id}`} className='block h-52 relative overflow-hidden'>
-        <Image 
-          src={blog.cover} 
-          alt="Blog Cover" 
-          width={1080} height={1080} 
+        <Image
+          src={blog.cover}
+          alt="Blog Cover"
+          width={1080} height={1080}
           className='w-full rounded-lg h-full object-cover' />
       </Link>
-      <div className='py-3 space-y-1'>
+      <div className='py-3 space-y-1 text-left'>
         <div className='flex gap-4 justify-between opacity-70'>
-        <span className='text-xs font-semibold block'>{blog.author.displayName}</span>
-          <span className='text-xs block'>{new Date(blog.publishedAt.toDate()).toDateString()}</span>
+          <span className='text-xs font-semibold block'>{blog.author.displayName}</span>
+          <span className='text-xs block'> {blog.publishedAt.toDate().toDateString()}</span>
         </div>
         <div className='py-2'>
           <h1 className='leading-tight font-sans text-lg m-0 line-clamp-2'>
@@ -42,7 +42,7 @@ export default function BlogCard({ blog, className }: Props) {
         </div>
 
       </div>
-      
+
     </div>
   );
 }

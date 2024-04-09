@@ -18,7 +18,7 @@ export interface Blog {
   shortDescription: string;
   cover: string;
   author: Author;
-  categoryIds: string[];
+  categories: string[];
   reactions: Record<ReactionType, number>;
   status: BlogStatus;
   publishedAt: Timestamp;

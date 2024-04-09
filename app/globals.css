@@ -22,9 +22,10 @@
   :root {
     --background: 0 0% 100%;
     --jodit-background: 0 0% 100%;
-    --jodit-foreground:  0 0% 10%;
+    --jodit-foreground: 0 0% 10%;
     --jodit-icon: 0, 0%, 20%;
     --foreground: 0, 0%, 20%;
+    --text-color: 0, 0%, 20%;
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
@@ -48,12 +49,13 @@
   .dark {
     --background: 0, 0%, 10%;
     --jodit-background: 0 0% 7%;
-    --jodit-foreground:  0 0% 100%;
+    --jodit-foreground: 0 0% 100%;
     --jodit-icon: 44, 100%, 92%;
     --foreground: 44, 100%, 95%;
+    --text-color: 43, 100%, 99%;
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
-    --popover:  0, 0%, 12%;
+    --popover: 0, 0%, 12%;
     --popover-foreground: 210 20% 98%;
     --primary: 210 20% 98%;
     --primary-foreground: 220.9 39.3% 11%;
@@ -76,12 +78,16 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-.html-content code, .html-content kbd, .html-content samp, .html-content pre {
+.html-content code,
+.html-content kbd,
+.html-content samp,
+.html-content pre {
   overflow: scroll;
 }
 
@@ -89,9 +95,26 @@
   word-wrap: break-word;
 }
 
-.html-content * {
+.html-content iframe {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 16 / 9;
+  border-radius: 1rem;
+  margin: 1rem auto;
+}
+
+.html-content *:not(code, button) {
   font-size: 1.1rem;
   font-family: var(--font-inter);
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--text-color)) !important;
+}
+
+.html-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin: 1rem auto;
 }
 
 
@@ -117,7 +140,8 @@
   font-family: var(--font-geist-mono);
 }
 
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   font-family: var(--font-inter);
@@ -147,7 +171,11 @@ h4 {
 
 
 
-h2, h3, h4, h5, h6 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-geist-sans);
 }
 
@@ -165,8 +193,22 @@ h2, h3, h4, h5, h6 {
 
 
 
+.texture-polka-dots{
+  position: relative;
+}
 
-
+.texture-polka-dots::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  opacity: 0.8;
+  background-color: hsl(var(--background));
+  background-image: radial-gradient(hsl(var(--destructive)) 0.5px, transparent 0.5px), 
+                  radial-gradient(hsl(var(--destructive)) 0.5px,  hsl(var(--accent)) 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
 
 
 
@@ -206,7 +248,8 @@ h2, h3, h4, h5, h6 {
 
 /* JODIT CSS */
 
-.jodit-toolbar__box, .jodit-container:not(.jodit_inline) {
+.jodit-toolbar__box,
+.jodit-container:not(.jodit_inline) {
   background-color: hsl(var(--background)) !important;
   border: 1px solid hsl((--border)) !important;
   border-radius: var(--radius) var(--radius) 0 0 !important;
@@ -220,7 +263,8 @@ h2, h3, h4, h5, h6 {
   height: .8rem !important;
 }
 
-.jodit-container .jodit-icon , .jodit-toolbar-button__icon {
+.jodit-container .jodit-icon,
+.jodit-toolbar-button__icon {
   stroke: hsl(var(--jodit-icon)) !important;
   color: hsl(var(--jodit-icon)) !important;
   fill: hsl(var(--jodit-icon)) !important;
@@ -255,7 +299,8 @@ h2, h3, h4, h5, h6 {
   opacity: 0.8 !important;
 }
 
-.jodit-status-bar, .jodit-add-new-line {
+.jodit-status-bar,
+.jodit-add-new-line {
   display: none !important;
 }
 
@@ -269,6 +314,7 @@ h2, h3, h4, h5, h6 {
   background: hsl(var(--popover)) !important;
   color: hsl(var(--popover-foreground)) !important;
 }
+
 .jodit-toolbar-button__text {
   color: hsl(var(--foreground)) !important;
 }

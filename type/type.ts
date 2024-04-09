@@ -11,6 +11,7 @@ export interface Link {
 
 export interface Author extends User {
   id: string;
+  profession: string;
   status: UserStatus;
   bio: string;
   links: Link[];

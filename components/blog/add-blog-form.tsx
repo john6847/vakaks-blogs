@@ -20,8 +20,10 @@ import HtmlEditor from '@/components/htmlEditor/html-editor'
 /* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
 
 const formSchema = z.object({
-  title: z.string().min(3, {
-    message: "The title must be at least 3 characters.",
+  title: z.string().min(103, {
+    message: "The title must be at least 103 characters.",
+  }).max(254, {
+    message: "The title must be at most 254 characters.",
   }),
   category: z.string().min(2, {
     message: "The category must be at least 2 characters.",
@@ -106,7 +108,10 @@ function AddBlogForm({ handleSubmit }: Props) {
                 Short Description
               </FormLabel>
               <FormControl>
-              <Textarea className='text-lg' placeholder="Type a short description of your blog"
+              <Textarea className='text-lg'
+                maxLength={254}
+                minLength={103}
+                placeholder="Type a short description of your blog"
                 {...field} />
               </FormControl>
               <FormMessage />
