@@ -110,6 +110,10 @@
   color: hsl(var(--text-color)) !important;
 }
 
+.html-content {
+  position: relative;
+}
+
 .html-content img {
   max-width: 100%;
   height: auto;

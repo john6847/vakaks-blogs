@@ -10,7 +10,7 @@ export const Header = () => {
         <Link href='/'>VAKAKS BLOG</Link>
         </h1>
         <nav className='flex sm:gap-8 gap-4 items-center'>
-          <ul className='flex sm:gap-8 gap-4 items-center justify-end'>
+          <ul className='sm:flex hidden sm:gap-8 gap-4 items-center justify-end'>
             <li className='block hover:text-destructive'>
               <Link href='/'> Home </Link>
             </li>

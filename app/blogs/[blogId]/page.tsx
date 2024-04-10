@@ -64,7 +64,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
                 <span className='font-sans sm:text-base text-xs font-extrabold opacity-30 uppercase'>Overview</span>
                 {blog.shortDescription}
               </h2>
-              {blog.categories && blog.categories.length>0 && <span className='text-center flex items-center gap-2 font-medium uppercase py-4 opacity-60'>
+              {blog.categories && blog.categories.length > 0 && <span className='text-center flex items-center gap-2 font-medium uppercase py-4 opacity-60'>
                 <Tags size={14} className='-scale-100 -rotate-90' /> {blog.categories.join(', ')}
               </span>}
             </div>
@@ -76,11 +76,13 @@ export default async function page({ params }: { params: { blogId: string } }) {
             />
           </summary>
           <hr className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
-          <div className='relative overflow-hidden sm:mx-auto mx-2 max-w-5xl'>
-            <div className='html-content sm:max-w-full max-w-[90vw] ' dangerouslySetInnerHTML={{ __html: blog.content }} />
-          </div>
+
         </article>
       </Suspense>
+
+      <div className='relative overflow-auto sm:mx-auto mx-2 max-w-5xl'>
+        <pre className='html-content' dangerouslySetInnerHTML={{ __html: blog.content }} />
+      </div>
 
       <hr className='border-dashed border-accent rounded-full max-w-6xl sm:mx-auto mx-4 border-b-8 bg-transparent border-0 ' />
       <CommentSection />
@@ -123,8 +125,8 @@ const AuthorProfile = ({ blog }: { blog: Blog }) => {
     return defImg.src
   }
   return (
-    <div className='relative mx-8 p-8 w-full flex justify-center flex-wrap items-center rounded-lg'>
-      <div className='bg-accent rounded-xl p-4 sm:gap-4 gap-2 flex flex-wrap items-center sm:justify-start justify-center w-fit'>
+    <div className='relative mx-8 p-8 w-full flex justify-center items-center rounded-lg'>
+      <div className='bg-accent rounded-xl p-4 sm:gap-4 gap-2 flex sm:flex-row flex-col items-center sm:justify-start justify-center w-fit'>
         <Image loading='lazy'
           src={profileImg()}
           alt={blog.author.displayName || 'author'}
