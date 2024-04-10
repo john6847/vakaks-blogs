@@ -52,6 +52,22 @@ export const getBlogs = async (perPage?: number): Promise<Blog[]> => {
 }
 
 
+export const likeBlog = async (id: string) => {
+  const blog = await getBlog(id);
+  if (!blog) return;
+  blog.reactions.LIKE += 1;
+  await setDoc(doc(db, DbCollection.BLOGS, id), blog);
+}
+
+export const dislikeBlog = async (id: string) => {
+  const blog = await getBlog(id);
+  if (!blog) return;
+  if(blog.reactions.DISLIKE === 0) return;
+  blog.reactions.DISLIKE -= 1;
+  await setDoc(doc(db, DbCollection.BLOGS, id), blog);
+}
+
+
 export const getBlog = async (id: string): Promise<Blog> => {
   if (!id) return null as any;
   const docRef = doc(db, DbCollection.BLOGS, id);

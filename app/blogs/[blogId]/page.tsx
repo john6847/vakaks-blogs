@@ -11,6 +11,7 @@ import NewsLetter from '@/components/newsletter/news-letter'
 import CommentSection from './comment-section'
 
 import RelatedBlogSection from '@/app/_components/related-blogs'
+import Options from './options'
 
 export default async function page({ params }: { params: { blogId: string } }) {
 
@@ -46,15 +47,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
           <AuthorProfile {...{ blog }} />
         </div>
 
-        <div className='fixed z-40 bottom-[45%] right-0 text-background flex  rounded-full mx-auto'>
-          <div className='w-fit bg-foreground rounded-l-xl justify-center px-2 py-4 flex flex-col items-center gap-4'>
-            <span title='Share' className='block text-sm font-semibold'><Share size={18} /> </span>
-            <span title='Comments' className='block text-sm font-semibold'><MessageCircle size={18} /> </span>
-            <span title='Options' className='block text-sm font-semibold'><Ellipsis size={18} /> </span>
-            <span title="Like" className='block text-sm font-semibold'><Heart size={18} /> </span>
-
-          </div>
-        </div>
+        <Options blogId={blog.id} />
 
         <article className='2xl:container 2xl:mx-auto space-y-8 sm:px-8 px-4'>
           <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-6xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
@@ -80,12 +73,16 @@ export default async function page({ params }: { params: { blogId: string } }) {
         </article>
       </Suspense>
 
-      <div className='relative overflow-auto sm:mx-auto mx-2 max-w-5xl'>
-        <pre className='html-content' dangerouslySetInnerHTML={{ __html: blog.content }} />
+      <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-5xl'>
+        <pre className='html-content whitespace-pre-wrap font-sans' dangerouslySetInnerHTML={{ __html: blog.content }} />
       </div>
 
-      <hr className='border-dashed border-accent rounded-full max-w-6xl sm:mx-auto mx-4 border-b-8 bg-transparent border-0 ' />
-      <CommentSection />
+      <hr id='comments-section' className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b bg-transparent border-0' />
+      <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
+        <CommentSection blog={blog} />
+      </Suspense>
+
+      {/* RELATED BLOGS */}
 
       <RelatedBlogSection
         className='text-center sm:max-w-6xl sm:mx-auto mx-2'
