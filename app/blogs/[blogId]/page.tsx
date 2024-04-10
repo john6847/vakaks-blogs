@@ -9,7 +9,7 @@ import { isValidUrl } from '@/helpers'
 import Link from 'next/link'
 import NewsLetter from '@/components/newsletter/news-letter'
 import CommentSection from './comment-section'
-import BlogSection from '@/app/_components/blog-section'
+
 import RelatedBlogSection from '@/app/_components/related-blogs'
 
 export default async function page({ params }: { params: { blogId: string } }) {
@@ -26,21 +26,17 @@ export default async function page({ params }: { params: { blogId: string } }) {
 
 
   return (
-    <main className='mb-8 grid gap-8 pb-8'>
+    <main className='mb-8 grid sm:gap-8 gap-4 pb-8'>
 
       <Suspense fallback={<LoadindSkeleton />}>
 
         <div className='-mt-40 pt-40 grid place-items-center bg-accent sm:min-h-[30rem] min-h-[25rem] w-full texture-polka-dots'>
           <div className='2xl:container 2xl:mx-auto sm:p-8 p-4 -mb-10'>
             <div className='relative'>
-              <h1 className='sm:text-7xl text-4xl max-w-4xl font-semibold text-center col-span-3'>
+              <h1 className='sm:text-7xl text-2xl max-w-4xl font-semibold text-center col-span-3'>
                 {blog.title}
               </h1>
               <div className='flex flex-wrap justify-center items-center mt-4 text-xs '>
-                {/* <span className='text-center flex items-center gap-2 font-medium uppercase bg-accent px-3 py-2'>
-                  <Tags size={14} className='-scale-100 -rotate-90' /> {blog.categories.join(', ')}
-                </span>
-                <hr className='w-2 border-foreground border-dotted border-2' /> */}
                 <span className='text-center flex items-center font-medium bg-accent px-3 py-2 gap-2'>
                   <CalendarDays size={14} /> {blog.publishedAt.toDate().toDateString()}
                 </span>
@@ -61,11 +57,11 @@ export default async function page({ params }: { params: { blogId: string } }) {
         </div>
 
         <article className='2xl:container 2xl:mx-auto space-y-8 sm:px-8 px-4'>
-          <summary className='transition-3 relative bg-accent p-8 max-w-6xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
+          <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-6xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
 
-            <div className='md:col-span-3'>
-              <h2 className='sm:text-4xl flex flex-col font-anton text-2xl md:text-left text-center'>
-                <span className='font-sans text-base font-extrabold opacity-30 uppercase'>Overview</span>
+            <div className='md:col-span-3 md:block grid place-items-center'>
+              <h2 className='sm:text-4xl flex flex-col font-anton text-lg md:text-left text-center'>
+                <span className='font-sans sm:text-base text-xs font-extrabold opacity-30 uppercase'>Overview</span>
                 {blog.shortDescription}
               </h2>
               {blog.categories && blog.categories.length>0 && <span className='text-center flex items-center gap-2 font-medium uppercase py-4 opacity-60'>
@@ -76,21 +72,21 @@ export default async function page({ params }: { params: { blogId: string } }) {
               src={getBannerImgUrl()}
               alt={blog.title}
               width={1200} height={600}
-              className='rounded-xl md:col-span-2 aspect-video object-cover mx-auto object-center w-full'
+              className='rounded-xl md:col-span-2 aspect-video object-cover object-center w-full'
             />
           </summary>
           <hr className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
-          <div className=''>
-            <div className='html-content mx-auto max-w-5xl' dangerouslySetInnerHTML={{ __html: blog.content }} />
+          <div className='relative overflow-hidden sm:mx-auto mx-2 max-w-5xl'>
+            <div className='html-content sm:max-w-full max-w-[90vw] ' dangerouslySetInnerHTML={{ __html: blog.content }} />
           </div>
         </article>
       </Suspense>
 
-      <hr className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b-8 bg-transparent border-0 ' />
+      <hr className='border-dashed border-accent rounded-full max-w-6xl sm:mx-auto mx-4 border-b-8 bg-transparent border-0 ' />
       <CommentSection />
 
       <RelatedBlogSection
-        className='text-center max-w-6xl sm:mx-auto mx-4'
+        className='text-center sm:max-w-6xl sm:mx-auto mx-2'
         title='Related Blogs'
         quantity={3}
       />
@@ -127,7 +123,7 @@ const AuthorProfile = ({ blog }: { blog: Blog }) => {
     return defImg.src
   }
   return (
-    <div className='relative mx-8 p-8 w-full flex justify-center items-center rounded-lg'>
+    <div className='relative mx-8 p-8 w-full flex justify-center flex-wrap items-center rounded-lg'>
       <div className='bg-accent rounded-xl p-4 sm:gap-4 gap-2 flex flex-wrap items-center sm:justify-start justify-center w-fit'>
         <Image loading='lazy'
           src={profileImg()}
@@ -138,8 +134,8 @@ const AuthorProfile = ({ blog }: { blog: Blog }) => {
         <div className=' sm:space-y-3 space-y-1'>
 
           <div className='sm:pl-2 sm:text-left text-center'>
-            <h2 className='text-xl capitalize font-semibold'>{blog.author.displayName}</h2>
-            <h3 className='text-sm font-light capitalize'>{blog.author.profession}</h3>
+            <h2 className='sm:text-xl text-base capitalize m-0 font-semibold'>{blog.author.displayName}</h2>
+            <h3 className='sm:text-sm text-xs font-normal capitalize m-0'>{blog.author.profession}</h3>
           </div>
 
           <div className='flex flex-wrap items-center gap-2'>
