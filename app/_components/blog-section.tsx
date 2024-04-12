@@ -10,17 +10,12 @@ type Props = {
   title?: string
   children?: React.ReactNode
   quantity?: number
+  notFoundMessage?: string
 }
-export default function BlogSection({ title, blogs, quantity = 4, children }: Props) {
-
-  if (!blogs || blogs.length === 0) {
-    return <section className='space-y-8'>
-      {title && <h1 className='sm:text-5xl text-3xl font-semibold font-sans sm:mt-8 mt-4'>
-        {title}
-      </h1>}
-      <p className='text-center text-lg my-8'>No blogs found</p>
-    </section>
-  }
+export default function BlogSection({ title, blogs,
+  quantity = 4,
+  notFoundMessage = "No blogs found",
+  children }: Props) {
 
   return (
     <section className='space-y-8'>
@@ -36,6 +31,9 @@ export default function BlogSection({ title, blogs, quantity = 4, children }: Pr
             ))
           }
         </div>
+        {
+          !blogs || blogs.length === 0 ? <p className='text-center font-mono text-lg opacity-40 italic my-8 py-32'>{notFoundMessage}</p> : null
+        }
       </Suspense>
       <div className='w-full grid place-items-center mt-8 pb-10'>
         <Link href='/blogs' className='flex items-center gap-2 hover:gap-3 transition-3 text-background bg-foreground text-center rounded-md py-2 px-4'>

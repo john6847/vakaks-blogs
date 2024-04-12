@@ -15,7 +15,7 @@ type Props = {
   className?: string;
   limit?: number;
 }
-export function CustomPagination({ className, limit = 13 }: Props) {
+export function CustomPagination({ className, limit = 5 }: Props) {
 
   const router = useRouter()
   const pathname = usePathname()
@@ -35,7 +35,7 @@ export function CustomPagination({ className, limit = 13 }: Props) {
   const handlePrevious = () => {
     const page = currentPage && parseInt(currentPage) > 1 ? parseInt(currentPage) - 1 : 0
     if (page === 0) {
-      router.push(`${pathname}`)
+      router.push(`${pathname}`, { scroll: false })
       return  
     }
     router.push(`${pathname}?${createQueryString('page', page.toString())}`, { scroll: false })

@@ -41,7 +41,7 @@ export default function FilterByCategory({navLinks}: Props) {
         {
           navLinks.map((link, index) => (
             <li key={index} onClick={() => handleCategory(link.toLowerCase())} 
-              className={`block px-3 py-1 rounded-full cursor-pointer transition-3 hover:bg-foreground hover:text-background bg-accent ${isActive(link)}`}>{link}</li>
+              className={`block px-3 py-1 slide-left capitalize rounded-full cursor-pointer transition-3 hover:bg-foreground hover:text-background bg-accent ${isActive(link)}`}>{link}</li>
           ))
         }
       </ul>

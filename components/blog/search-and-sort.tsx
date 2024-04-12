@@ -6,14 +6,14 @@ type Props = {
   navLinks: string[]
 }
 
-export default function SearchAndSort() {
+export default function SearchAndSort({ navLinks }: Props) {
 
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const search = searchParams?.get('search') || ''
-  const sort = searchParams?.get('sort') || 'newest'
+  const sort = searchParams?.get('sort') || 'default'
 
   const createQueryString = React.useCallback((name: string, value: string) => {
     const params = new URLSearchParams(searchParams?.toString())
@@ -44,7 +44,7 @@ export default function SearchAndSort() {
   }
 
   const handleSort = (sort: string) => {
-    if (sort === 'newest' || !sort || sort === 'newest') {
+    if (sort === 'default' || !sort) {
       const params = new URLSearchParams(searchParams?.toString())
       params.delete('sort')
       router.push(`${pathname}?${params.toString()}`, { scroll: false })
@@ -58,32 +58,39 @@ export default function SearchAndSort() {
       <div className='flex flex-wrap gap-x-8 gap-y-4 items-center'>
         <div className='flex gap-4 items-center'>
           <span className='block text-sm font-semibold'>Sort By:</span>
-          <select name="sort" id="sort" 
+          <select name="sort" id="sort"
             value={sort} onChange={(e) => handleSort(e.target.value)}
             className='bg-accent text-accent-foreground'>
-            <option value="latest">Latest</option>
-            <option value="oldest">Oldest</option>
+            <option value="default">
+              Default
+            </option>
+            <option value="asc">
+              Ascending
+            </option>
+            <option value="desc">
+              Descending
+            </option>
           </select>
         </div>
         <div className='flex gap-4 items-center'>
           <span className='block text-sm font-semibold'>Category:</span>
-          <select name="category" id="category" 
+          <select name="category" id="category"
             value={searchParams?.get('category') || 'all'} onChange={(e) => handleCategory(e.target.value)}
-          className='bg-accent text-accent-foreground'>
-            <option value="all">All</option>
-            <option value="nextjs">NextJS</option>
-            <option value="react">React</option>
-            <option value="tailwindcss">TailwindCSS</option>
-            <option value="web-development">Web Development</option>
+            className='bg-accent text-accent-foreground'>
+            {
+              navLinks.map((link: string) => (
+                <option className='capitalize' key={link} value={link.toLowerCase()}>{link}</option>
+              ))
+            }
           </select>
         </div>
       </div>
       <div className='flex gap-2 items-baseline'>
         <span className='block text-sm font-semibold'>Search:</span>
         <input type="text"
-          placeholder='Search Blogs'
+          placeholder='Search by title...'
           onChange={handleSearch}
-         className='bg-accent text-accent-foreground border-foreground border-opacity-50 border px-2 py-0 outline-none rounded-sm' />
+          className='bg-accent text-accent-foreground border-foreground border-opacity-50 border px-2 py-1 outline-none rounded-sm' />
       </div>
     </div>
   )

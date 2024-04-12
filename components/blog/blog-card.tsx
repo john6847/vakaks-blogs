@@ -11,7 +11,7 @@ type Props = {
 }
 export default function BlogCard({ blog, className }: Props) {
   return (
-    <div className={cn('bg-accent rounded-xl p-2 overflow-hidden', className)}>
+    <div className={cn('bg-accent rounded-xl p-2 fade-in overflow-hidden', className)}>
       <Link href={`/blogs/${blog.id}`} className='block h-52 relative overflow-hidden'>
         <Image
           src={blog.cover}
@@ -19,7 +19,7 @@ export default function BlogCard({ blog, className }: Props) {
           width={1080} height={1080}
           className='w-full rounded-lg h-full object-cover' />
       </Link>
-      <div className='py-3 space-y-1 text-left'>
+      <div className='pt-3 pb-1 space-y-1 text-left'>
         <div className='flex gap-4 justify-between opacity-70'>
           <span className='text-xs font-semibold block'>{blog.author.displayName}</span>
           <span className='text-xs block'> {blog.publishedAt.toDate().toDateString()}</span>
@@ -36,8 +36,8 @@ export default function BlogCard({ blog, className }: Props) {
         </div>
 
         <div className='pt-2'>
-          <Link href={`/blogs/${blog.id}`} className='flex group justify-center items-center gap-1 hover:gap-2 w-full transition-3 bg-background text-foreground text-center rounded-md p-2'>
-            Read More <ArrowRight size={20} />
+          <Link href={`/blogs/${blog.id}`} className='flex justify-center items-center gap-1 hover:gap-2 w-full transition-5 bg-background text-foreground text-center rounded-md p-2'>
+            Read More <ArrowRight size={20} className='transition-10'/>
           </Link>
         </div>
 

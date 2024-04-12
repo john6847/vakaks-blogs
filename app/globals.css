@@ -132,6 +132,22 @@
   transition: all .3s ease-in-out
 }
 
+.transition-5 {
+  transition: all .5s ease-in-out
+}
+
+.transition-7 {
+  transition: all .7s ease-in-out
+}
+
+.transition-9 {
+  transition: all .9s ease-in-out
+}
+
+.transition-10 {
+  transition: all 1s ease-in-out
+}
+
 .text-title {
   font-size: var(--title-size);
   line-height: calc(var(--title-size) * 1.1);
@@ -217,10 +233,46 @@ h6 {
 }
 
 
+.fade-in {
+  animation: fade-in 1s ease;
+}
+
+.slide-in {
+  animation: slide-in 1s ease-in-out;
+}
 
 
+.slide-left {
+  animation: slide-left 1s ease-in-out;
+}
 
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
 
 

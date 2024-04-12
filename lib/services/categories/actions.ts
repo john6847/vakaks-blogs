@@ -3,6 +3,16 @@ import { db } from '@/lib/config/firebase';
 import { doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 
 
+export const getCategaries = async () => {
+  const docRef = doc(db, DbCollection.SETTINGS, "categories");
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data().data;
+  }
+  return [];
+
+}
+
 export const saveCategory = async (categories: string[]) => {
 
   categories = categories.map((category) => category.toLowerCase().replaceAll('  ', ' ').trim());

@@ -2,7 +2,8 @@
 import { DbCollection } from '@/lib/config/collections';
 import {
   collection, doc, getDoc, getDocs, getDocsFromServer, limit,
-  orderBy, query, setDoc, startAfter, Timestamp
+  orderBy, query, setDoc, startAfter, Timestamp,
+  where
 }
   from 'firebase/firestore';
 import { db, generateId } from '@/lib/config/firebase';
@@ -17,6 +18,7 @@ export const saveBlog = async (blogDto: any) => {
     ...blogDto,
     id: refId,
     author: getAuthor(),
+    categories: blogDto.categories.map((category: string) => category.toLowerCase().replaceAll('  ', ' ').trim()),
     reactions: {
       LIKE: 0,
       LOVE: 0,
@@ -32,21 +34,43 @@ export const saveBlog = async (blogDto: any) => {
 }
 
 
-export const getBlogs = async (perPage?: number): Promise<Blog[]> => {
+export const getBlogs = async (perPage?: number, order?:"asc"|"desc"): Promise<Blog[]> => {
 
-  const first = query(collection(db, DbCollection.BLOGS), orderBy("publishedAt"), limit(perPage || 13));
+  const orderType = order ? order : "desc";
+
+  const first = query(collection(db, DbCollection.BLOGS),
+    where("status", "==", BlogStatus.PUBLISHED),
+    orderBy("publishedAt", orderType), limit(perPage || 8));
+
   const documentSnapshots = await getDocs(first);
 
   // Get the last visible document
-  const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1] || null;
+  /* const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1] || null;
 
   const next = query(collection(db, DbCollection.BLOGS),
     orderBy("publishedAt"),
     startAfter(lastVisible),
     limit(perPage || 13));
 
-  const nextDocumentSnapshots = await getDocs(next);
+  const nextDocumentSnapshots = await getDocs(next); */
 
+  const blogs = documentSnapshots.docs.map(doc => doc.data());
+  return blogs as Blog[];
+}
+
+export const getBlogsByCategory = async (category: string | undefined | null, perPage?: number, order?:"asc"|"desc"): Promise<Blog[]> => {
+  
+  const orderType = order ? order : "desc";
+
+  if (!category || category === 'all') return await getBlogs(perPage, orderType);
+
+  const ref = collection(db, DbCollection.BLOGS);
+
+  const q = query(ref, where("categories", "array-contains", category.toLowerCase()),
+    where("status", "==", BlogStatus.PUBLISHED),
+    orderBy("publishedAt", orderType), limit(perPage || 4));
+
+  const documentSnapshots = await getDocs(q);
   const blogs = documentSnapshots.docs.map(doc => doc.data());
   return blogs as Blog[];
 }
@@ -62,7 +86,7 @@ export const likeBlog = async (id: string) => {
 export const dislikeBlog = async (id: string) => {
   const blog = await getBlog(id);
   if (!blog) return;
-  if(blog.reactions.DISLIKE === 0) return;
+  if (blog.reactions.DISLIKE === 0) return;
   blog.reactions.DISLIKE -= 1;
   await setDoc(doc(db, DbCollection.BLOGS, id), blog);
 }
