@@ -23,7 +23,7 @@ export default async function BlogBanner({ title, quantity = 2, children }: Prop
       {children}
       <div className='grid md:gap-8 gap-4 lg:grid-cols-5'>
         <div className='overflow-hidden lg:col-span-2 h-full'>
-          <Image src={bannerImg} alt='hero'
+          <Image src={bannerImg} alt='hero' priority
             width={1260} height={960}
             className='rounded-xl object-cover md:min-h-[26rem] lg:h-full md:h-64 h-44 transition-3 -scale-x-100 object-center '
           />

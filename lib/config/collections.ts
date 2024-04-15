@@ -4,4 +4,5 @@ export enum DbCollection {
   AUTHORS = 'authors',
   COMMENTS = 'comments',
   SETTINGS = 'settings',
+  BLOG_COVERS = 'blog/covers',
 }

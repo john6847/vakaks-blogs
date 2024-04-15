@@ -1,9 +1,9 @@
 import { DbCollection } from '@/lib/config/collections';
 import { db } from '@/lib/config/firebase';
-import { doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 
-export const getCategaries = async () => {
+export const getCategories = async () => {
   const docRef = doc(db, DbCollection.SETTINGS, "categories");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {

@@ -16,31 +16,39 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
 import { toast } from 'react-toastify'
 import HtmlEditor from '@/components/htmlEditor/html-editor'
+import { useSession } from 'next-auth/react'
+import DropZone from './drop-zone'
 
 /* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
 
 const formSchema = z.object({
-  title: z.string().min(103, {
-    message: "The title must be at least 103 characters.",
+  description: z.string().min(103, {
+    message: "The description must be at least 103 characters.",
   }).max(254, {
-    message: "The title must be at most 254 characters.",
+    message: "The description must be at most 254 characters.",
   }),
   category: z.string().min(2, {
     message: "The category must be at least 2 characters.",
   }),
-  description: z.string().min(10, {
-    message: "The description must be at least 10 characters.",
+  title: z.string().min(10, {
+    message: "The title must be at least 10 characters.",
   }),
   content: z.string().min(300, {
     message: "The content must be at least 300 characters.",
   }),
+  cover: z.string().min(10, {
+    message: "The cover image is required.",
+  })
 })
 
 
 type Props = {
   handleSubmit?: any;
+  categories: string[];
 }
 function AddBlogForm({ handleSubmit }: Props) {
+
+  const { data } = useSession()
   
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,12 +58,17 @@ function AddBlogForm({ handleSubmit }: Props) {
       category: "",
       description: "",
       content: "",
+      cover: ""
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+
     if(handleSubmit){
-      handleSubmit(values).then(() => {
+      handleSubmit({
+        ...values,
+        author: data?.user as any
+      }).then(() => {
         form.reset()
         toast.success('Blog added successfully!')
       }).catch((error: any) => {
@@ -66,63 +79,86 @@ function AddBlogForm({ handleSubmit }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem className="space-y-1">
-              <FormLabel className="text-lg font-normal opacity-90">
-                Blog Title
-              </FormLabel>
-              <FormControl>
-                <Input className="text-2xl px-2 py-4" placeholder="What the title of your blog?"
+      <form onSubmit={form.handleSubmit(onSubmit)} className="gap-8 space-y-8 md:space-y-0 md:mt-16 md:grid md:grid-cols-2">
+
+        <div className='space-y-4'>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="space-y-1">
+                <FormLabel className="text-lg font-normal opacity-90">
+                  Blog Title
+                </FormLabel>
+                <FormControl>
+                  <Input className="text-base px-2 py-4" placeholder="What the title of your blog?"
+                    {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="space-y-1">
+                <FormLabel className="text-lg font-normal opacity-90">
+                  Short Description
+                </FormLabel>
+                <FormControl>
+                <Textarea className='text-base h-full min-h-44'
+                  maxLength={254}
+                  minLength={103}
+                  placeholder="Type a short description of your blog"
                   {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem className="space-y-1">
-              <FormLabel className="text-lg font-normal opacity-90">
-                Choose a category or create a new one
-              </FormLabel>
-              <FormControl>
-                <Input className="text-2xl px-2 py-4" placeholder="Software Development"
-                  {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem className="space-y-1">
-              <FormLabel className="text-lg font-normal opacity-90">
-                Short Description
-              </FormLabel>
-              <FormControl>
-              <Textarea className='text-lg'
-                maxLength={254}
-                minLength={103}
-                placeholder="Type a short description of your blog"
-                {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className='space-y-4'>
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="text-lg font-normal opacity-90">
+                  Choose a category or create a new one
+                </FormLabel>
+                <FormControl>
+                  <Input className="text-base px-2 py-4" placeholder="Software Development"
+                    {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="cover"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel className="text-lg font-normal opacity-90">
+                  Upload a cover image
+                </FormLabel>
+                <FormControl>
+                  <DropZone {...field}/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="space-y-1 col-span-2">
               <FormLabel className="text-lg font-normal opacity-90">
                 The content of your blog
               </FormLabel>
@@ -133,7 +169,9 @@ function AddBlogForm({ handleSubmit }: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className='flex items-center justify-center col-span-2'>
+        <Button className='min-w-[50%]' type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   )

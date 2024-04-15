@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import { cn } from '@/lib/utils';
 import OtherProvider from '@/components/other-provider';
+import AuthProvider from './auth-provider';
 import PublicLayout from './publicLayout';
 
 const inter = Inter({
@@ -57,7 +58,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="google-adsense-account" content="ca-pub-4245479224018715"/>
+        <meta name="google-adsense-account" content="ca-pub-4245479224018715" />
       </head>
       <body className={
         cn(
@@ -69,9 +70,11 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange>
-          <PublicLayout>
-            {children}
-          </PublicLayout>
+          <AuthProvider>
+            <PublicLayout>
+              {children}
+            </PublicLayout>
+          </AuthProvider>
           <OtherProvider />
         </ThemeProvider>
 

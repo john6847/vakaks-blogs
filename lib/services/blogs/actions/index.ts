@@ -2,12 +2,11 @@
 import { DbCollection } from '@/lib/config/collections';
 import {
   collection, doc, getDoc, getDocs, getDocsFromServer, limit,
-  orderBy, query, setDoc, startAfter, Timestamp,
+  orderBy, query, setDoc, Timestamp,
   where
 }
   from 'firebase/firestore';
 import { db, generateId } from '@/lib/config/firebase';
-import { getAuthor } from '../../users';
 import { saveCategory } from '../../categories/actions';
 import { Blog, BlogStatus } from '../type';
 
@@ -17,7 +16,6 @@ export const saveBlog = async (blogDto: any) => {
   const blog: Blog = {
     ...blogDto,
     id: refId,
-    author: getAuthor(),
     categories: blogDto.categories.map((category: string) => category.toLowerCase().replaceAll('  ', ' ').trim()),
     reactions: {
       LIKE: 0,

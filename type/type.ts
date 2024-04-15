@@ -9,6 +9,10 @@ export interface Link {
   url: string;
 }
 
+export enum UserRole {
+  ADMIN="ADMIN", AUTHOR="AUTHOR", USER="USER"
+}
+
 export interface Author extends User {
   id: string;
   profession: string;

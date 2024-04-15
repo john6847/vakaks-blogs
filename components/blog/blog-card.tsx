@@ -14,7 +14,7 @@ export default function BlogCard({ blog, className }: Props) {
     <div className={cn('bg-accent rounded-xl p-2 fade-in overflow-hidden', className)}>
       <Link href={`/blogs/${blog.id}`} className='block h-52 relative overflow-hidden'>
         <Image
-          src={blog.cover}
+          src={blog.cover} loading='lazy'
           alt="Blog Cover"
           width={1080} height={1080}
           className='w-full rounded-lg h-full object-cover' />

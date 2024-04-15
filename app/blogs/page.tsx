@@ -4,7 +4,7 @@ import SearchAndSort from '@/components/blog/search-and-sort'
 import { CustomPagination } from '@/components/pagination/custom-pagination'
 import { getBlogsByCategory } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
-import { getCategaries } from '@/lib/services/categories/actions'
+import { getCategories } from '@/lib/services/categories/actions'
 import { SearchParams } from '@/type/type'
 import React, { Suspense } from 'react'
 
@@ -12,7 +12,7 @@ export default async function page({ searchParams }: SearchParams) {
 
   const { category, page, sort } = searchParams
 
-  const navLinks = await getCategaries()
+  const navLinks = await getCategories()
   navLinks.unshift('All')
 
   const order = sort==="asc" ? sort : 'desc'

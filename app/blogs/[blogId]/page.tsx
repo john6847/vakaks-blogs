@@ -61,7 +61,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
                 <Tags size={14} className='-scale-100 -rotate-90' /> {blog.categories.join(', ')}
               </span>}
             </div>
-            <Image
+            <Image priority
               src={getBannerImgUrl()}
               alt={blog.title}
               width={1200} height={600}
