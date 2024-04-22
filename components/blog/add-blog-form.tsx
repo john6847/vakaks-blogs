@@ -18,6 +18,7 @@ import { toast } from 'react-toastify'
 import HtmlEditor from '@/components/htmlEditor/html-editor'
 import { useSession } from 'next-auth/react'
 import DropZone from './drop-zone'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 
 /* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
 
@@ -46,10 +47,10 @@ type Props = {
   handleSubmit?: any;
   categories: string[];
 }
-function AddBlogForm({ handleSubmit }: Props) {
+function AddBlogForm({ categories, handleSubmit }: Props) {
 
   const { data } = useSession()
-  
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,7 +65,11 @@ function AddBlogForm({ handleSubmit }: Props) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
 
-    if(handleSubmit){
+    alert(JSON.stringify(values))
+    return;
+
+
+    if (handleSubmit) {
       handleSubmit({
         ...values,
         author: data?.user as any
@@ -88,7 +93,7 @@ function AddBlogForm({ handleSubmit }: Props) {
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel className="text-lg font-normal opacity-90">
-                  Blog Title
+                  Title
                 </FormLabel>
                 <FormControl>
                   <Input className="text-base px-2 py-4" placeholder="What the title of your blog?"
@@ -107,11 +112,11 @@ function AddBlogForm({ handleSubmit }: Props) {
                   Short Description
                 </FormLabel>
                 <FormControl>
-                <Textarea className='text-base h-full min-h-44'
-                  maxLength={254}
-                  minLength={103}
-                  placeholder="Type a short description of your blog"
-                  {...field} />
+                  <Textarea className='text-base h-full min-h-44'
+                    maxLength={254}
+                    minLength={103}
+                    placeholder="Type a short description of your blog"
+                    {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -125,12 +130,34 @@ function AddBlogForm({ handleSubmit }: Props) {
             name="category"
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="text-lg font-normal opacity-90">
+                <FormLabel htmlFor='category' className="text-lg font-normal opacity-90">
                   Choose a category or create a new one
                 </FormLabel>
                 <FormControl>
                   <Input className="text-base px-2 py-4" placeholder="Software Development"
-                    {...field} />
+                      {...field} />
+
+{/* 
+                  <Select {...field} >
+                    <SelectTrigger className="w-[280px] capitalize">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>
+                          Categories saved
+                        </SelectLabel>
+                        {
+                          categories.map((category, index) => (
+                            <SelectItem key={index} className='capitalize' value={category}>{category}</SelectItem>
+                          ))
+                        }
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select> */}
+
+
+
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -145,7 +172,7 @@ function AddBlogForm({ handleSubmit }: Props) {
                   Upload a cover image
                 </FormLabel>
                 <FormControl>
-                  <DropZone {...field}/>
+                  <DropZone {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,7 +180,7 @@ function AddBlogForm({ handleSubmit }: Props) {
           />
         </div>
 
-        
+
         <FormField
           control={form.control}
           name="content"
@@ -170,7 +197,7 @@ function AddBlogForm({ handleSubmit }: Props) {
           )}
         />
         <div className='flex items-center justify-center col-span-2'>
-        <Button className='min-w-[50%]' type="submit">Submit</Button>
+          <Button className='min-w-[50%]' type="submit">Submit</Button>
         </div>
       </form>
     </Form>

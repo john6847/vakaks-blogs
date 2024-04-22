@@ -4,11 +4,11 @@ import { Blog } from '@/lib/services/blogs/type'
 import Image from 'next/image'
 import React, { Suspense } from 'react'
 import defImg from '@/public/images/software-developer-post-1.jpeg'
-import { CalendarDays, Ellipsis, Heart, MessageCircle, Share, Tags } from 'lucide-react'
+import { CalendarDays, Tags } from 'lucide-react'
 import { isValidUrl } from '@/helpers'
 import Link from 'next/link'
 import NewsLetter from '@/components/newsletter/news-letter'
-import CommentSection from './comment-section'
+/* import CommentSection from './comment-section' */
 
 import RelatedBlogSection from '@/app/_components/related-blogs'
 import Options from './options'
@@ -73,14 +73,14 @@ export default async function page({ params }: { params: { blogId: string } }) {
         </article>
       </Suspense>
 
-      <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-5xl'>
+      <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-6xl'>
         <pre className='html-content whitespace-pre-wrap font-sans' dangerouslySetInnerHTML={{ __html: blog.content }} />
       </div>
 
       <hr id='comments-section' className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b bg-transparent border-0' />
-      <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
+      {/* <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
         <CommentSection blog={blog} />
-      </Suspense>
+      </Suspense> */}
 
       {/* RELATED BLOGS */}
 

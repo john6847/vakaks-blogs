@@ -2,6 +2,7 @@
 import React from 'react';
 import JoditEditor from 'jodit-react';
 
+
 type HtmlEditorProps = {
   placeholder?: string;
   [key: string]: any;
@@ -23,7 +24,10 @@ const HtmlEditor = ({ placeholder, ...props }: HtmlEditorProps) => {
     }
   }, [placeholder]);
 
+
+
 	return (
+    <>
       <JoditEditor
         className='bg-background'
         {...props}
@@ -32,6 +36,8 @@ const HtmlEditor = ({ placeholder, ...props }: HtmlEditorProps) => {
         config={config}
         onBlur={newContent => setContent(newContent)} 
       />
+    
+    </>
 	);
 };
 

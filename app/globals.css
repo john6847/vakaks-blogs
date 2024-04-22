@@ -103,7 +103,7 @@
   margin: 1rem auto;
 }
 
-.html-content *:not(code, button) {
+.html-content *:not(code, button, pre) {
   font-size: 1.1rem;
   font-family: var(--font-inter);
   background-color: hsl(var(--background)) !important;
