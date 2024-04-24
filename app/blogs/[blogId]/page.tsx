@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { getBlog } from '@/lib/services/blogs/actions'
+import { getBlog, likeBlog } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
 import Image from 'next/image'
 import React, { Suspense } from 'react'
@@ -8,15 +8,49 @@ import { CalendarDays, Tags } from 'lucide-react'
 import { isValidUrl } from '@/helpers'
 import Link from 'next/link'
 import NewsLetter from '@/components/newsletter/news-letter'
-/* import CommentSection from './comment-section' */
-
-import RelatedBlogSection from '@/app/_components/related-blogs'
 import Options from './options'
+import { headers } from 'next/headers'
+import { revalidateTag } from 'next/cache'
 
+const getBlogById = async (id: string) => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
+  const url = `${baseUrl}/api/blogs/${id}`
+  const response = await fetch(url, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    next: { tags: [`blogs-${id}`] }
+  })
+
+  if (response.ok) {
+    const blog = await response.json()
+    return blog as Blog
+  }
+  return null as any
+
+}
 export default async function page({ params }: { params: { blogId: string } }) {
 
-  const id = params?.blogId || ''
-  const blog: Blog = await getBlog(id)
+  const { blogId } = params
+  
+  const blog: Blog = await getBlogById(blogId)
+
+  if(!blog) return <div className='mx-auto container space-y-4 text-center text-xl py-32'>
+    <h1>Blog Not Found</h1>
+    <p>Sorry, the blog you are looking for does not exist</p>
+    <Link href='/blogs'
+      className='underline underline-offset-4 block w-fit mx-auto my-8 transition-3'> Back to Blogs</Link>
+
+  </div>
+
+  const getDate = () => {
+
+    if (!blog.publishedAt) return new Date().toDateString()
+    const date = new Date(blog.publishedAt.seconds * 1000)
+    return date.toDateString()
+  }
 
   const getBannerImgUrl = () => {
     if (isValidUrl(blog.cover)) return blog.cover
@@ -24,6 +58,11 @@ export default async function page({ params }: { params: { blogId: string } }) {
   }
 
 
+  const handleLike = async () => {
+    "use server"
+    likeBlog(blog.id)
+    revalidateTag(`blogs-${blogId}`)
+  }
 
 
   return (
@@ -39,7 +78,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
               </h1>
               <div className='flex flex-wrap justify-center items-center mt-4 text-xs '>
                 <span className='text-center flex items-center font-medium bg-accent px-3 py-2 gap-2'>
-                  <CalendarDays size={14} /> {blog.publishedAt.toDate().toDateString()}
+                  <CalendarDays size={14} /> {getDate()}
                 </span>
               </div>
             </div>
@@ -47,7 +86,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
           <AuthorProfile {...{ blog }} />
         </div>
 
-        <Options blogId={blog.id} />
+        <Options {...{blog}} handleLike={handleLike}/>
 
         <article className='2xl:container 2xl:mx-auto space-y-8 sm:px-8 px-4'>
           <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-6xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
@@ -73,22 +112,24 @@ export default async function page({ params }: { params: { blogId: string } }) {
         </article>
       </Suspense>
 
-      <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-6xl'>
-        <pre className='html-content whitespace-pre-wrap font-sans' dangerouslySetInnerHTML={{ __html: blog.content }} />
-      </div>
+      <Suspense>
+        {blog.content && <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-6xl'>
+          <pre className='html-content whitespace-pre-wrap font-sans' suppressHydrationWarning dangerouslySetInnerHTML={{ __html: blog.content }} />
+        </div>}
+      </Suspense>
 
-      <hr id='comments-section' className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b bg-transparent border-0' />
+      <hr id='comments-section' className='w-full my-16 border-dashed border-accent rounded-full max-w-6xl mx-auto border-b bg-transparent border-0' />
       {/* <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
         <CommentSection blog={blog} />
       </Suspense> */}
 
       {/* RELATED BLOGS */}
 
-      <RelatedBlogSection
+      {/* <RelatedBlogSection
         className='text-center sm:max-w-6xl sm:mx-auto mx-2'
         title='Related Blogs'
         quantity={3}
-      />
+      /> */}
 
       {/* NEWS LETTER */}
 
@@ -117,10 +158,14 @@ const LoadindSkeleton = () => {
 
 const AuthorProfile = ({ blog }: { blog: Blog }) => {
 
+  if(!blog.author) return null
+
   const profileImg = (): string => {
-    if (isValidUrl(blog.author.photoURL)) return blog.author.photoURL as string
+    if (isValidUrl(blog.author?.photoURL)) return blog.author.photoURL as string
     return defImg.src
   }
+
+
   return (
     <div className='relative mx-8 p-8 w-full flex justify-center items-center rounded-lg'>
       <div className='bg-accent rounded-xl p-4 sm:gap-4 gap-2 flex sm:flex-row flex-col items-center sm:justify-start justify-center w-fit'>

@@ -9,6 +9,9 @@ import {
 import { db, generateId } from '@/lib/config/firebase';
 import { saveCategory } from '../../categories/actions';
 import { Blog, BlogStatus } from '../type';
+import { revalidatePath, revalidateTag } from 'next/cache';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const saveBlog = async (blogDto: any) => {
   const refId = generateId(DbCollection.BLOGS);
@@ -77,8 +80,16 @@ export const getBlogsByCategory = async (category: string | undefined | null, pe
 export const likeBlog = async (id: string) => {
   const blog = await getBlog(id);
   if (!blog) return;
-  blog.reactions.LIKE += 1;
-  await setDoc(doc(db, DbCollection.BLOGS, id), blog);
+
+  await setDoc(doc(db, DbCollection.BLOGS, id), {
+    ...blog,
+    publishedAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+    reactions: {
+      ...blog.reactions,
+      LIKE: blog.reactions.LIKE + 1
+    }
+  });
 }
 
 export const dislikeBlog = async (id: string) => {
@@ -90,11 +101,26 @@ export const dislikeBlog = async (id: string) => {
 }
 
 
-export const getBlog = async (id: string): Promise<Blog> => {
+export const getBlog = async (id: string|undefined|null): Promise<Blog> => {
+
   if (!id) return null as any;
-  const docRef = doc(db, DbCollection.BLOGS, id);
+  const url = `${baseUrl}/api/blogs/${id}`;
+
+  const response = await fetch(url, {
+    next: {tags: [`blogs-${id}`]}
+  });
+  
+  if(response.ok){
+    const blog = await response.json();
+    return blog as Blog;
+  }
+
+  return null as any;
+
+  /* const docRef = doc(db, DbCollection.BLOGS, id);
   const docSnap = await getDoc(docRef);
-  return docSnap.data() as Blog;
+  // cacth the tag
+  return docSnap.data() as Blog; */
 }
 
 

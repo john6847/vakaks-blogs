@@ -31,7 +31,7 @@ export default async function page() {
   const categories = await getCategories()
 
   return (
-    <main className='2xl:container mx-auto sm:p-8 p-4 bg-accent'>
+    <main className='2xl:container mx-auto sm:px-8 px-4 -mt-36 sm:pt-48 pt-40 pb-16 bg-accent'>
       <h1 className='sm:text-7xl text-4xl font-semibold md:mb-0 mb-8'>
         Add a new blog
       </h1>

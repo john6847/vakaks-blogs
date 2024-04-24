@@ -112,7 +112,7 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
                   Short Description
                 </FormLabel>
                 <FormControl>
-                  <Textarea className='text-base h-full min-h-44'
+                  <Textarea className='text-base h-full min-h-[11.5rem]'
                     maxLength={254}
                     minLength={103}
                     placeholder="Type a short description of your blog"
@@ -187,7 +187,7 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
           render={({ field }) => (
             <FormItem className="space-y-1 col-span-2">
               <FormLabel className="text-lg font-normal opacity-90">
-                The content of your blog
+                Content
               </FormLabel>
               <FormControl className='min-h-[25rem]'>
                 <HtmlEditor {...field} />

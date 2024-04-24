@@ -17,6 +17,7 @@ const handler = NextAuth({
       }
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
       const author: Author = await getUserByEmail(user?.email as string)
