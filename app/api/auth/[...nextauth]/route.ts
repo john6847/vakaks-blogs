@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getUserByEmail } from '@/lib/services/users';
 import { Author } from '@/type/type';
 import NextAuth from "next-auth";
@@ -17,7 +18,7 @@ const handler = NextAuth({
       }
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
     async jwt({ token, user }) {
       const author: Author = await getUserByEmail(user?.email as string)
@@ -39,7 +40,7 @@ const handler = NextAuth({
         }
       }
     },
-  }
+  },
 });
 
 export { handler as GET, handler as POST };

@@ -1,3 +1,4 @@
+import { textCapitalize } from '@/helpers';
 import { DbCollection } from '@/lib/config/collections';
 import { db } from '@/lib/config/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -7,7 +8,7 @@ export const getCategories = async () => {
   const docRef = doc(db, DbCollection.SETTINGS, "categories");
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    return docSnap.data().data;
+    return docSnap.data().data.map((category:string) => textCapitalize(category)).sort();
   }
   return [];
 

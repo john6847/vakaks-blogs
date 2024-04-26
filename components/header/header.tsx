@@ -9,8 +9,9 @@ import { cn } from '@/lib/utils';
 export const Header = () => {
 
   const { setTheme, theme, systemTheme } = useTheme()
-  const { status } = useSession();
-  const isLogged = status === "authenticated";
+  const { data } = useSession();
+  const isLogged = data && data?.user && data?.user?.uid ? true : false
+
 
   const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
@@ -45,8 +46,6 @@ type MenuProps = {
   isDarkMode?: boolean
 }
 const Menu = ({ handleTheme, isDarkMode, isLogged }: MenuProps) => {
-
-  
 
   return (
     <nav className={cn('flex items-center')}>

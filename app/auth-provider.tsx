@@ -1,12 +1,13 @@
 "use client"
-import { SessionProvider, useSession } from 'next-auth/react'
+import { AuthProvider } from 'firebase/auth'
+import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 
-export default function AuthProvider({ children}: { children: React.ReactNode}) {
-  
+export default function UserAuthProvider({ children }: { children: React.ReactNode }) {
+
   return (
-    <SessionProvider session={null}>
-      {children}
-    </SessionProvider>
+      <SessionProvider session={null}>
+        {children}
+      </SessionProvider>
   )
 }

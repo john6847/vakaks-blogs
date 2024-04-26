@@ -11,6 +11,7 @@ import NewsLetter from '@/components/newsletter/news-letter'
 import Options from './options'
 import { headers } from 'next/headers'
 import { revalidateTag } from 'next/cache'
+import { SocialMediaIcon } from '@/components/ui/icons/social-media-icon'
 
 const getBlogById = async (id: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
@@ -89,7 +90,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
         <Options {...{blog}} handleLike={handleLike}/>
 
         <article className='2xl:container 2xl:mx-auto space-y-8 sm:px-8 px-4'>
-          <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-6xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
+          <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-7xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
 
             <div className='md:col-span-3 md:block grid place-items-center'>
               <h2 className='sm:text-4xl flex flex-col font-anton text-lg md:text-left text-center'>
@@ -107,18 +108,18 @@ export default async function page({ params }: { params: { blogId: string } }) {
               className='rounded-xl md:col-span-2 aspect-video object-cover object-center w-full'
             />
           </summary>
-          <hr className='w-full border-dashed border-accent rounded-full max-w-6xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
+          <hr className='w-full border-dashed border-accent rounded-full max-w-7xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
 
         </article>
       </Suspense>
 
       <Suspense>
-        {blog.content && <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-6xl'>
+        {blog.content && <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-7xl'>
           <pre className='html-content whitespace-pre-wrap font-sans' suppressHydrationWarning dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>}
       </Suspense>
 
-      <hr id='comments-section' className='w-full my-16 border-dashed border-accent rounded-full max-w-6xl mx-auto border-b bg-transparent border-0' />
+      <hr id='comments-section' className='w-full my-16 border-dashed border-accent rounded-full max-w-7xl mx-auto border-b bg-transparent border-0' />
       {/* <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
         <CommentSection blog={blog} />
       </Suspense> */}
@@ -183,63 +184,10 @@ const AuthorProfile = ({ blog }: { blog: Blog }) => {
           </div>
 
           <div className='flex flex-wrap items-center gap-2'>
-            <Link title='Visit My Website' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-world" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                <path d="M3.6 9h16.8" />
-                <path d="M3.6 15h16.8" />
-                <path d="M11.5 3a17 17 0 0 0 0 18" />
-                <path d="M12.5 3a17 17 0 0 1 0 18" />
-              </svg>
-            </Link>
-            <Link title='LinkedIn' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-linkedin" viewBox="0 0 24 24" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                <path d="M8 11l0 5" />
-                <path d="M8 8l0 .01" />
-                <path d="M12 16l0 -5" />
-                <path d="M16 16v-3a2 2 0 0 0 -4 0" />
-              </svg>
-            </Link>
-            <Link title='Youtube' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-youtube" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" />
-                <path d="M10 9l5 3l-5 3z" />
-              </svg>
-            </Link>
-            <Link title='Facebook' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-facebook" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
-              </svg>
-            </Link>
-            <Link title='Instagram' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-instagram" viewBox="0 0 24 24" strokeWidth="1.7" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M4 4m0 4a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
-                <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                <path d="M16.5 7.5l0 .01" />
-              </svg>
-            </Link>
-            <Link title='Twitter' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-x" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-              </svg>
-            </Link>
-            <Link title='Threads' href="#" className='block bg-background rounded-full p-1 hover:bg-foreground hover:text-background transition-3 '>
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current sm:w-5 w-4 sm:h-5 h-4 icon icon-tabler icon-tabler-brand-threads" viewBox="0 0 24 24" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M19 7.5c-1.333 -3 -3.667 -4.5 -7 -4.5c-5 0 -8 2.5 -8 9s3.5 9 8 9s7 -3 7 -5s-1 -5 -7 -5c-2.5 0 -3 1.25 -3 2.5c0 1.5 1 2.5 2.5 2.5c2.5 0 3.5 -1.5 3.5 -5s-2 -4 -3 -4s-1.833 .333 -2.5 1" />
-              </svg>
-            </Link>
-
+            {
+              blog.author.links?.map((link, index) => <SocialMediaIcon key={index} name={link.name} url={link.url} />)
+            }
           </div>
-
         </div>
 
       </div>

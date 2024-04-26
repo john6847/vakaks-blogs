@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import HtmlEditor from '@/components/htmlEditor/html-editor'
 import { useSession } from 'next-auth/react'
 import DropZone from './drop-zone'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+import { SelectSearch } from '../ui/select-search'
 
 /* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
 
@@ -51,6 +51,7 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
 
   const { data } = useSession()
 
+  const [selectedCategory, setSelectedCategory] = React.useState<string>('')
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,10 +65,6 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
-    alert(JSON.stringify(values))
-    return;
-
 
     if (handleSubmit) {
       handleSubmit({
@@ -134,30 +131,13 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
                   Choose a category or create a new one
                 </FormLabel>
                 <FormControl>
-                  <Input className="text-base px-2 py-4" placeholder="Software Development"
-                      {...field} />
-
-{/* 
-                  <Select {...field} >
-                    <SelectTrigger className="w-[280px] capitalize">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>
-                          Categories saved
-                        </SelectLabel>
-                        {
-                          categories.map((category, index) => (
-                            <SelectItem key={index} className='capitalize' value={category}>{category}</SelectItem>
-                          ))
-                        }
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select> */}
-
-
-
+                  <div>
+                    <SelectSearch data={categories} 
+                      onChange={(value:string) => {
+                        field.onChange(value.toLowerCase())
+                      }}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

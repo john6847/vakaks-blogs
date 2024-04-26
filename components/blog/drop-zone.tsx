@@ -4,6 +4,9 @@ import { Button } from '../ui/button'
 import Image from 'next/image'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import { useUploadFile } from '@/hooks/useUploadFile'
+import { DbCollection } from '@/lib/config/collections'
+import { ImagePlus, RemoveFormatting, RotateCcw } from 'lucide-react'
 
 
 type Props = {
@@ -11,17 +14,11 @@ type Props = {
 }
 export default function DropZone({ ...props }: Props) {
 
-  /* const {isLoading, removeImage, uploadImage} = useUploadFile() */
+  const {isLoading, removeImage, uploadImage} = useUploadFile()
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [file, setFile] = React.useState<any>()
   const [url, setUrl] = React.useState<string>('')
   const [mode, setMode] = React.useState<'none' | 'upload' | 'url'>('none')
-
-  const generateUrl = async () => {
-    if (!file) return
-    const url = URL.createObjectURL(file)
-    setUrl(url)
-  }
 
   React.useEffect(() => {
     if (props.defaultValue) {
@@ -30,16 +27,19 @@ export default function DropZone({ ...props }: Props) {
   }, [props.defaultValue]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    alert('Not implemented yet')
-    const file = e.target.files && e.target.files[0]
+   
+    const files = e.target.files
+    const file = files && files[0]
+    if (!file) return
     setFile(file)
 
-    /* if(file) {
+    if(file) {
       const refId = new Date().getTime().toString()
       uploadImage(file, refId, DbCollection.BLOG_COVERS).then((url) => {
         setUrl(url)
+        if(props.onChange) props.onChange(url)
       })
-    } */
+    }
   }
 
   const handleAddUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,9 +57,9 @@ export default function DropZone({ ...props }: Props) {
 
   const handleRemove = async () => {
 
-    /* if(mode === 'upload' && url && file) {
+    if(mode === 'upload' && url && file) {
       await removeImage(url)
-    } */
+    }
     setFile(null)
     setUrl('')
     setFile(null)
@@ -73,14 +73,16 @@ export default function DropZone({ ...props }: Props) {
       
       <Input {...inputRef} name="cover" id="cover" className='absolute hidden -z-40' value={url} {...props} />
 
-      {/* {
+      {
         isLoading && <span className='absolute left-0 backdrop-blur-md top-0 w-full h-full flex items-center justify-center z-10 bg-background/60 p-4 rounded-sm text-xl text-foreground text-center'>
           Loading<span className='animate-pulse text-3xl -mt-4'>...</span>
         </span>
-      } */}
+      }
 
       {
-        (url || file) && <span className='absolute top-2 right-2 z-10 bg-background p-1 rounded-sm text-sm text-destructive cursor-pointer' onClick={handleRemove}>Remove</span>
+        mode !== "none" && <span className='absolute top-2 flex items-center gap-1 right-2 z-10 bg-background p-1 rounded-sm text-xs font-bold text-destructive cursor-pointer' onClick={handleRemove}>
+          <RotateCcw size={16} /> Reset
+        </span>
       }
 
       {
@@ -97,8 +99,15 @@ export default function DropZone({ ...props }: Props) {
         </Button>
       </div>}
 
-      {mode === "upload" && <div className='relative'>
-        <input type='file' accept="image/*" onChange={handleChange} />
+      {mode === "upload" && url==='' && <div className='relative grid w-full h-full place-items-center'>
+        <input type='file' accept="image/*" onChange={handleChange} className='absolute cursor-pointer w-full h-full z-30 opacity-0'/>
+        <div className='flex items-center gap-2'>
+          <ImagePlus size={42} className='block'/>
+          <div>
+            <h6 className='text-base text-foreground'>Upload a cover image</h6>
+            <span className='text-sm block opacity-40 text-foreground'>Only images are supported</span>
+          </div>
+        </div>
       </div>}
       {mode === "url" && url==="" && <div className='relative flex-1 w-full'>
         <Label>Url </Label>

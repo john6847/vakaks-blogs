@@ -8,7 +8,7 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import { cn } from '@/lib/utils';
 import OtherProvider from '@/components/other-provider';
-import AuthProvider from './auth-provider';
+import UserAuthProvider from './auth-provider';
 import PublicLayout from './publicLayout';
 
 const inter = Inter({
@@ -70,11 +70,11 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange>
-          <AuthProvider>
+          <UserAuthProvider>
             <PublicLayout>
               {children}
             </PublicLayout>
-          </AuthProvider>
+          </UserAuthProvider>
           <OtherProvider />
         </ThemeProvider>
 
