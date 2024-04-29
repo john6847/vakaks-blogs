@@ -1,6 +1,6 @@
 import { textCapitalize } from '@/helpers';
 import { DbCollection } from '@/lib/config/collections';
-import { db } from '@/lib/config/firebase';
+import { db } from '@/lib/config/firebase-client';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 

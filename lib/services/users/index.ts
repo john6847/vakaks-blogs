@@ -1,7 +1,7 @@
 "use server"
 import { DbCollection } from '@/lib/config/collections';
-import { db } from '@/lib/config/firebase';
-import { Author, UserStatus } from '@/type/type';
+import { db } from '@/lib/config/firebase-client';
+import { Account, Author, UserStatus } from '@/types';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
 export const getAuthor = (): Author => {
@@ -41,7 +41,7 @@ export const getAuthorByUid = async (id: string | null | undefined): Promise<Aut
 }
 
 
-export const getUserByEmail = async (email: string): Promise<Author> => {
+export const getUserByEmail = async (email: string): Promise<Account> => {
 
     if (!email) return null as any;
 

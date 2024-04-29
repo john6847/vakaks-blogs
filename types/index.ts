@@ -21,6 +21,13 @@ export interface Author extends User {
   links: Link[];
 }
 
+export interface Account extends Author {}
+
 export type SearchParams = {
   searchParams: { [key: string]: string | undefined }
+}
+
+export type APIResponse<T> = {
+  success: boolean;
+  data: T;
 }

@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import { DbCollection } from '@/lib/config/collections';
-import { db } from '@/lib/config/firebase';
+import { db } from '@/lib/config/firebase-client';
 import { collection, getDocs } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 

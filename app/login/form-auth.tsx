@@ -1,24 +1,39 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import React from 'react'
 import googleIcon from '@/public/images/icons/google-icon.svg';
 import Image from 'next/image';
+import { logOut, signInWithGoogle } from '@/lib/auth';
+import { useSession } from '@/hooks/useSession';
 
 export const FormAuth = () => {
-  const { status } = useSession();
-  const isLogged = status === "authenticated";
+
+  const { status } = useSession('only-status');
+  const handleSignIn = async () => {
+    await signInWithGoogle();
+    window.location.reload();
+  };
+
+  const handleSignOut = async () => {
+    await logOut();
+
+    window.location.reload();
+  };
+
+
+
+
   return (
-    <div>
-      {!isLogged ? <Button variant="secondary" onClick={() => signIn("google", {callbackUrl:"/"})} className='cursor-pointer gap-2' title='Login with Google'>
-          {/* <LogIn className='h-6 w-6 fade-in' /> */}
-          <Image src={googleIcon} width={100} height={100}  alt='Google Icon' className='h-6 w-6' /> Sign in with Google
-        </Button> :
-          <Button  onClick={() => signOut()} className='cursor-pointer gap-2' title='Logout'>
-            <LogOut className='h-6 cursor-pointer w-6 fade-in' /> Logout
-          </Button>
-        }
+    <div className='grid gap-6'>
+
+      {status === "unauthenticated" ? <Button onClick={handleSignIn}>
+        <Image src={googleIcon} alt="Google icon" />
+        <span>Sign in with Google</span>
+      </Button> :
+        <Button onClick={handleSignOut} className='flex items-center gap-2'>
+          <LogOut size={16} className='block mr-2' /> Sign out
+        </Button>}
     </div>
   )
 }

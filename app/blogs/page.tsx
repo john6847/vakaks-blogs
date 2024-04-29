@@ -5,7 +5,7 @@ import { CustomPagination } from '@/components/pagination/custom-pagination'
 import { getBlogsByCategory } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
 import { getCategories } from '@/lib/services/categories/actions'
-import { SearchParams } from '@/type/type'
+import { SearchParams } from '@/types'
 import React, { Suspense } from 'react'
 
 export default async function page({ searchParams }: SearchParams) {

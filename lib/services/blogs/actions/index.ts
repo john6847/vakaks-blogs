@@ -1,15 +1,13 @@
 "use server"
 import { DbCollection } from '@/lib/config/collections';
 import {
-  collection, doc, getDoc, getDocs, getDocsFromServer, limit,
+  collection, doc, getDocs, getDocsFromServer, limit,
   orderBy, query, setDoc, Timestamp,
   where
-}
-  from 'firebase/firestore';
-import { db, generateId } from '@/lib/config/firebase';
+} from 'firebase/firestore';
+import { db, generateId } from '@/lib/config/firebase-client';
 import { saveCategory } from '../../categories/actions';
 import { Blog, BlogStatus } from '../type';
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -19,7 +17,7 @@ export const saveBlog = async (blogDto: any) => {
   const blog: Blog = {
     ...blogDto,
     id: refId,
-    categories: blogDto.categories.map((category: string) => category.toLowerCase().replaceAll('  ', ' ').trim()),
+    categories: blogDto.categories,
     reactions: {
       LIKE: 0,
       LOVE: 0,
@@ -44,16 +42,6 @@ export const getBlogs = async (perPage?: number, order?:"asc"|"desc"): Promise<B
     orderBy("publishedAt", orderType), limit(perPage || 8));
 
   const documentSnapshots = await getDocs(first);
-
-  // Get the last visible document
-  /* const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1] || null;
-
-  const next = query(collection(db, DbCollection.BLOGS),
-    orderBy("publishedAt"),
-    startAfter(lastVisible),
-    limit(perPage || 13));
-
-  const nextDocumentSnapshots = await getDocs(next); */
 
   const blogs = documentSnapshots.docs.map(doc => doc.data());
   return blogs as Blog[];
@@ -116,11 +104,6 @@ export const getBlog = async (id: string|undefined|null): Promise<Blog> => {
   }
 
   return null as any;
-
-  /* const docRef = doc(db, DbCollection.BLOGS, id);
-  const docSnap = await getDoc(docRef);
-  // cacth the tag
-  return docSnap.data() as Blog; */
 }
 
 

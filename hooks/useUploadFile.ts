@@ -1,4 +1,4 @@
-import { storage } from '@/lib/config/firebase';
+import { storage } from '@/lib/config/firebase-client';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import React from 'react';
 

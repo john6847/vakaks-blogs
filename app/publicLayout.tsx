@@ -6,6 +6,7 @@ type Props = {
   children: React.ReactNode
 }
 export default function PublicLayout({ children }: Props) {
+  
   return (
     <main className='relative overflow-hidden pb-14'>
       <Header />

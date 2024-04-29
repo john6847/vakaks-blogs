@@ -1,5 +1,5 @@
 import { getBlogsByCategory } from '@/lib/services/blogs/actions';
-import { SearchParams } from '@/type/type';
+import { SearchParams } from '@/types';
 import Image from 'next/image';
 import bannerImg from '@/public/images/software-developer-0.jpeg';
 import BlogSection from './_components/blog-section';

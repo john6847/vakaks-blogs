@@ -1,17 +1,15 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { Moon, SunMoon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSession } from '@/hooks/useSession';
 
 export const Header = () => {
 
   const { setTheme, theme, systemTheme } = useTheme()
-  const { data } = useSession();
-  const isLogged = data && data?.user && data?.user?.uid ? true : false
-
+  const { status } = useSession('only-status')
 
   const isDarkMode = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
@@ -30,7 +28,7 @@ export const Header = () => {
           <Link href='/'>VAKAKS <span className='absolute bottom-1 ltop-1/2  l-translate-y-1/2 sm:-right-10 -right-9 bg-background shadow-md text-destructive sm:px-2 px-1 rounded-3xl font-mono text-xs font-extrabold'>BLOG</span></Link>
         </h1>
         <Menu 
-          isLogged={isLogged}
+          isLogged={status==="authenticated"}
           handleTheme={handleTheme}
           isDarkMode={isDarkMode}
         />

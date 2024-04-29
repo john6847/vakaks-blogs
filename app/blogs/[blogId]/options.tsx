@@ -1,6 +1,9 @@
 "use client"
 import { formatNumberToNk } from '@/helpers'
+import { DbCollection } from '@/lib/config/collections'
+import { db } from '@/lib/config/firebase-client'
 import { Blog } from '@/lib/services/blogs/type'
+import { doc, setDoc, Timestamp } from 'firebase/firestore'
 import { Heart, Share } from 'lucide-react'
 import React from 'react'
 
@@ -13,6 +16,15 @@ export default function Options({ blog, handleLike }: Props) {
   const likes= blog.reactions?.LIKE || 0
 
   const likeBlog = async () => {
+    await setDoc(doc(db, DbCollection.BLOGS, blog.id), {
+      ...blog,
+      publishedAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+      reactions: {
+        ...blog.reactions,
+        LIKE: blog.reactions.LIKE + 1
+      }
+    });
     await handleLike()
   }
 

@@ -1,5 +1,4 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { getBlog, likeBlog } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
 import Image from 'next/image'
 import React, { Suspense } from 'react'
@@ -61,7 +60,6 @@ export default async function page({ params }: { params: { blogId: string } }) {
 
   const handleLike = async () => {
     "use server"
-    likeBlog(blog.id)
     revalidateTag(`blogs-${blogId}`)
   }
 

@@ -1,4 +1,4 @@
-import { Author } from '@/type/type';
+import { Author } from '@/types';
 import { Timestamp } from 'firebase/firestore';
 
 export enum BlogStatus {

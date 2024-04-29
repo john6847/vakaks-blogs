@@ -1,23 +1,40 @@
 export const dynamic = "force-dynamic";
+import { auth } from '@/lib/config/firebase-client';
 import { getUserByEmail } from '@/lib/services/users';
-import { Author } from '@/type/type';
+import { Author } from '@/types';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials"
 
 const handler = NextAuth({
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
+    CredentialsProvider({
+      name: 'credentials',
+      credentials: {
+        email: { label: "Email", type: "email" }
+      },
+      // @ts-ignore
+      async authorize(credentials, req) {
+
+        if(!credentials) {
+          throw new Error('No credentials provided!')
+        }
+        const { email } = credentials
+        if(!(email)) {
+          throw new Error('Email are required!')
+        }
+
+        return {
+          email
         }
       }
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 24 hours
+  },
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
     async jwt({ token, user }) {
@@ -28,7 +45,6 @@ const handler = NextAuth({
           ...author
         }
       }
-
       return token
     },
     async session({ session, token }) {
@@ -39,6 +55,11 @@ const handler = NextAuth({
           ...token
         }
       }
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      else if (new URL(url).origin === baseUrl) return url
+      return baseUrl
     },
   },
 });

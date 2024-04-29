@@ -22,9 +22,10 @@ export default async function page() {
       content: values.content,
       shortDescription: values.description,
       cover: values.cover,
-      categories: handleCategories(values.categories),
+      categories: handleCategories(values.category),
       author: values.author,
     } as Blog
+
     await saveBlog(blog)
   }
 

@@ -16,7 +16,7 @@ export default function BlogCard({ blog, className }: Props) {
         <Image
           src={blog.cover} loading='lazy'
           alt="Blog Cover"
-          width={1080} height={1080}
+          width={500} height={500}
           className='w-full rounded-lg h-full object-cover' />
       </Link>
       <div className='pt-3 pb-1 space-y-1 text-left sm:h-[45%]'>
