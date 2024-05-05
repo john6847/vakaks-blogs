@@ -4,17 +4,16 @@ import Image from 'next/image'
 import React, { Suspense } from 'react'
 import defImg from '@/public/images/software-developer-post-1.jpeg'
 import { CalendarDays, Tags } from 'lucide-react'
-import { isValidUrl } from '@/helpers'
+import { generateJsonLd, isValidUrl } from '@/helpers'
 import Link from 'next/link'
 import NewsLetter from '@/components/newsletter/news-letter'
-import Options from './options'
 import { headers } from 'next/headers'
 import { revalidateTag } from 'next/cache'
 import { SocialMediaIcon } from '@/components/ui/icons/social-media-icon'
-
+import SharedOptions from '@/components/share/shared-options'
+import { Metadata, ResolvingMetadata } from 'next'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 const getBlogById = async (id: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-
   const url = `${baseUrl}/api/blogs/${id}`
   const response = await fetch(url, {
     headers: {
@@ -31,11 +30,63 @@ const getBlogById = async (id: string) => {
   return null as any
 
 }
+
+
+
+
+type Props = {
+  params: { blogId: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+ 
+
+// https://www.link-assistant.com/news/structured-data-for-seo.html
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.blogId
+  const blog:Blog = await getBlogById(id)
+ 
+  return {
+    title: blog.title,
+    description: blog.shortDescription,
+    category: blog.categories.join(', '),
+    keywords: blog.categories,
+    assets: blog.cover,
+    twitter:{
+      title: blog.title,
+      description: blog.shortDescription,
+      images: [blog.cover],
+      site: '@vakaks',
+      card: 'summary_large_image',
+      siteId: '@vakaks',
+      creator: '@vakaks',
+    },
+    authors: [
+      {
+        name: blog.author?.displayName || 'Vakaks',
+        url: blog.author?.links?.[0]?.url,
+      }
+    ],
+    openGraph: {
+      images: [blog.cover],
+      title: blog.title,
+      description: blog.shortDescription,
+      siteName: 'Vakaks Blogs',
+    },
+  }
+}
+
 export default async function page({ params }: { params: { blogId: string } }) {
 
   const { blogId } = params
   
   const blog: Blog = await getBlogById(blogId)
+
+  const jsonLd = generateJsonLd(blog)
+
+  
 
   if(!blog) return <div className='mx-auto container space-y-4 text-center text-xl py-32'>
     <h1>Blog Not Found</h1>
@@ -66,6 +117,10 @@ export default async function page({ params }: { params: { blogId: string } }) {
 
   return (
     <main className='mb-8 grid sm:gap-8 gap-4 pb-8'>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       <Suspense fallback={<LoadindSkeleton />}>
 
@@ -85,7 +140,6 @@ export default async function page({ params }: { params: { blogId: string } }) {
           <AuthorProfile {...{ blog }} />
         </div>
 
-        <Options {...{blog}} handleLike={handleLike}/>
 
         <article className='2xl:container 2xl:mx-auto space-y-8 sm:px-8 px-4'>
           <summary className='transition-3 relative bg-accent sm:p-8 p-4 max-w-7xl mx-auto grid md:grid-cols-5 place-items-center md:gap-8 gap-4 transition-3 rounded-lg list-none'>
@@ -109,6 +163,7 @@ export default async function page({ params }: { params: { blogId: string } }) {
           <hr className='w-full border-dashed border-accent rounded-full max-w-7xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
 
         </article>
+        <SharedOptions url={`${baseUrl}/blogs/${blogId}`} title={blog.title} description={blog.shortDescription} category={blog.categories}/>
       </Suspense>
 
       <Suspense>
@@ -117,20 +172,8 @@ export default async function page({ params }: { params: { blogId: string } }) {
         </div>}
       </Suspense>
 
+
       <hr id='comments-section' className='w-full my-16 border-dashed border-accent rounded-full max-w-7xl mx-auto border-b bg-transparent border-0' />
-      {/* <Suspense fallback={<div className='mx-auto max-w-5xl'>Comment Loading...</div>}>
-        <CommentSection blog={blog} />
-      </Suspense> */}
-
-      {/* RELATED BLOGS */}
-
-      {/* <RelatedBlogSection
-        className='text-center sm:max-w-6xl sm:mx-auto mx-2'
-        title='Related Blogs'
-        quantity={3}
-      /> */}
-
-      {/* NEWS LETTER */}
 
       <NewsLetter />
 

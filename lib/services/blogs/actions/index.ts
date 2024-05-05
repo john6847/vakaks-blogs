@@ -1,4 +1,3 @@
-"use server"
 import { DbCollection } from '@/lib/config/collections';
 import {
   collection, doc, getDocs, getDocsFromServer, limit,

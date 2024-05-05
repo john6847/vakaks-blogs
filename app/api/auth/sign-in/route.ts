@@ -1,3 +1,7 @@
+
+// @joe-watson-sbf
+// app > api > auth > sign-in > route.ts
+
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,9 +15,35 @@ export async function POST(request: NextRequest) {
 
   const expiresIn = 60 * 60 * 24 * 7 * 1000; // 7 days
 
-  const sessionCookie = await createSessionCookie(idToken, { expiresIn });
+  const sessionCookie = await createSessionCookie(idToken, { 
+    expiresIn 
+  });
 
-  cookies().set(appSessionName, sessionCookie, { maxAge: expiresIn, httpOnly: true, secure: true });
+  cookies().set(appSessionName, sessionCookie, { 
+    maxAge: expiresIn, 
+    httpOnly: true, 
+    secure: true 
+  });
 
-  return NextResponse.json<APIResponse<string>>({ success: true, data: "Signed in successfully." });
+  return NextResponse.json<APIResponse<string>>(
+    { 
+      success: true, 
+      data: "Signed in successfully." 
+    });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

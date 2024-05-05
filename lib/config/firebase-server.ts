@@ -32,9 +32,11 @@ export const app =
 export const auth = getAuth(app);
 
 
+import "server-only";
 
-
-export async function isUserAuthenticated(session: string | undefined = undefined) {
+export async function isUserAuthenticated(
+  session: string | undefined = undefined
+) {
   const _vaks_session = session ?? (await getSession());
   if (!_vaks_session) return false;
 
@@ -42,7 +44,6 @@ export async function isUserAuthenticated(session: string | undefined = undefine
     const isRevoked = !(await auth.verifySessionCookie(_vaks_session, true));
     return !isRevoked;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

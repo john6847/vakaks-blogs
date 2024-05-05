@@ -16,11 +16,11 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
 import { toast } from 'react-toastify'
 import HtmlEditor from '@/components/htmlEditor/html-editor'
-import { useSession } from 'next-auth/react'
 import DropZone from './drop-zone'
 import { SelectSearch } from '../ui/select-search'
-
-/* const HtmlEditor = dynamic(() => import('@/components/htmlEditor/html-editor'), { ssr: false }) */
+import { useSession } from '@/hooks/useSession'
+import { Blog } from '@/lib/services/blogs/type'
+import { saveBlog } from '@/lib/services/blogs/actions'
 
 const formSchema = z.object({
   description: z.string().min(103, {
@@ -44,14 +44,11 @@ const formSchema = z.object({
 
 
 type Props = {
-  handleSubmit?: any;
   categories: string[];
 }
-function AddBlogForm({ categories, handleSubmit }: Props) {
+function AddBlogForm({ categories }: Props) {
 
-  const { data } = useSession()
-
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('')
+  const { user } = useSession()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,17 +63,27 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
 
-    if (handleSubmit) {
-      handleSubmit({
-        ...values,
-        author: data?.user as any
-      }).then(() => {
-        form.reset()
-        toast.success('Blog added successfully!')
-      }).catch((error: any) => {
-        toast.error('An error occurred while adding the blog.')
-      })
+    const handleCategories = (value: string) => {
+      if (!value || value.length < 1) return []
+      return value.split(',').map((v) => v.replaceAll('  ', ' ').trim())
     }
+
+    const blogData = {
+      title: values.title,
+      content: values.content,
+      shortDescription: values.description,
+      cover: values.cover,
+      categories: handleCategories(values.category),
+      author: user
+    } as Blog
+
+    saveBlog(blogData).then(() => {
+      form.reset()
+      toast.success('Blog added successfully!')
+    }).catch((error: any) => {
+      toast.error('An error occurred while adding the blog.')
+    })
+
   }
 
   return (
@@ -132,8 +139,8 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
                 </FormLabel>
                 <FormControl>
                   <div>
-                    <SelectSearch data={categories} 
-                      onChange={(value:string) => {
+                    <SelectSearch data={categories}
+                      onChange={(value: string) => {
                         field.onChange(value.toLowerCase())
                       }}
                     />
@@ -177,7 +184,9 @@ function AddBlogForm({ categories, handleSubmit }: Props) {
           )}
         />
         <div className='flex items-center justify-center col-span-2'>
-          <Button className='min-w-[50%]' type="submit">Submit</Button>
+          <Button className='min-w-[50%]' type="submit">
+            {form.formState.isValidating ? 'Adding...' : 'Add Blog'}
+          </Button>
         </div>
       </form>
     </Form>

@@ -1,4 +1,7 @@
-export const isValidUrl = (url: string|null|undefined) => {
+import { Blog } from '@/lib/services/blogs/type'
+import vakaks from '@/app/favicon.ico'
+
+export const isValidUrl = (url: string | null | undefined) => {
   if (!url) return false
   try {
     new URL(url)
@@ -19,7 +22,52 @@ export const textCapitalize = (text: string) => {
 }
 
 export const textCamelCase = (text: string) => {
-  return text.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+  return text.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
     return index === 0 ? word.toLowerCase() : word.toUpperCase()
   }).replace(/\s+/g, ' ')
+}
+
+
+const getDate = (blogDate:any) => {
+
+  if (blogDate) return new Date().toDateString()
+  const date = new Date(blogDate.seconds * 1000)
+  return date.toDateString()
+}
+
+export const generateJsonLd = (blog: Blog) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://blogs.vakaks.com/blogs/" + blog.id
+    },
+    "headline": blog.title,
+    "datePublished": getDate(blog.publishedAt),
+    "dateModified": getDate(blog.updatedAt),
+    "description": blog.shortDescription,
+    "image": {
+      "@type": "ImageObject",
+      "url": blog.cover,
+      "width": 1080,
+      "height": 1080
+    },
+    "author": {
+      "@type": "Person",
+      "name": blog.author?.displayName || 'Vakaks',
+      "image": blog.author?.photoURL,
+      "jobTitle": blog.author?.profession,
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Vakaks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": vakaks,
+        "width": 800,
+        "height": 800
+      }
+    }
+  }
 }
