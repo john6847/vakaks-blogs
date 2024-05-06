@@ -37,7 +37,7 @@ type Props = {
   params: { articleId: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
- 
+
 
 // https://www.link-assistant.com/news/structured-data-for-seo.html
 export async function generateMetadata(
@@ -45,8 +45,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const id = params.articleId
-  const blog:Blog = await getBlogById(id)
- 
+  const blog: Blog = await getBlogById(id)
+
   return {
     title: blog.title,
     bookmarks: "VAKAKS - " + blog.title,
@@ -54,7 +54,7 @@ export async function generateMetadata(
     category: blog.categories.join(', '),
     keywords: blog.categories,
     assets: blog.cover,
-    twitter:{
+    twitter: {
       title: blog.title,
       description: blog.shortDescription,
       images: [blog.cover],
@@ -81,14 +81,14 @@ export async function generateMetadata(
 export default async function page({ params }: { params: { articleId: string } }) {
 
   const { articleId } = params
-  
+
   const blog: Blog = await getBlogById(articleId)
 
   // SEO
   const jsonLd = generateBlogPostingJsonLd(blog)
-  
 
-  if(!blog) return <div className='mx-auto container space-y-4 text-center text-xl py-32'>
+
+  if (!blog) return <div className='mx-auto container space-y-4 text-center text-xl py-32'>
     <h1>Blog Not Found</h1>
     <p>Sorry, the blog you are looking for does not exist</p>
     <Link href='/articles'
@@ -113,11 +113,11 @@ export default async function page({ params }: { params: { articleId: string } }
 
       <Suspense fallback={<LoadindSkeleton />}>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
         <div className='-mt-40 pt-40 grid place-items-center bg-accent sm:min-h-[30rem] min-h-[25rem] w-full texture-polka-dots'>
           <div className='2xl:container 2xl:mx-auto sm:p-8 p-4 -mb-10'>
             <div className='relative'>
@@ -157,7 +157,7 @@ export default async function page({ params }: { params: { articleId: string } }
           <hr className='w-full border-dashed border-accent rounded-full max-w-7xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
 
         </article>
-        <SharedOptions url={`${baseUrl}/articles/${articleId}`} title={blog.title} description={blog.shortDescription} category={blog.categories}/>
+        <SharedOptions url={`${baseUrl}/articles/${articleId}`} title={blog.title} description={blog.shortDescription} category={blog.categories} />
       </Suspense>
 
       <Suspense>
@@ -194,7 +194,7 @@ const LoadindSkeleton = () => {
 
 const AuthorProfile = ({ blog }: { blog: Blog }) => {
 
-  if(!blog.author) return null
+  if (!blog.author) return null
 
   const profileImg = (): string => {
     if (isValidUrl(blog.author?.photoURL)) return blog.author.photoURL as string
