@@ -23,7 +23,7 @@ export default function SharedOptions({ url, title, description, category }: Pro
 
   const tags = category?.join(' #') + ' #vakaks #blogs'
   return (
-    <div className='flex gap-2 items-center justify-center -mt-[4.2rem] bg-accent w-fit mx-auto px-6 py-0 rounded-full'>
+    <div className='flex gap-2 items-center justify-center sm:-mt-[4.2rem] -mt-10 bg-accent w-fit mx-auto sm:px-6 p-2 rounded-full'>
       {/* <EmailShareButton url={url} subject={title} body={description}>
         <EmailIcon size={30} round />
       </EmailShareButton> */}

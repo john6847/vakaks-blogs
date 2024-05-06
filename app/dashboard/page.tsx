@@ -1,7 +1,5 @@
 import React, { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { saveBlog } from '@/lib/services/blogs/actions'
-import { Blog } from '@/lib/services/blogs/type'
 import { getCategories } from '@/lib/services/categories/actions'
 
 

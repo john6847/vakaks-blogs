@@ -36,7 +36,7 @@ export default function BlogSection({ title, blogs,
         }
       </Suspense>
       <div className='w-full grid place-items-center mt-8 pb-10'>
-        <Link href='/blogs' className='flex items-center gap-2 hover:gap-3 transition-3 text-background bg-foreground text-center rounded-md py-2 px-4'>
+        <Link href='/articles' className='flex items-center gap-2 hover:gap-3 transition-3 text-background bg-foreground text-center rounded-md py-2 px-4'>
           View all Blogs <SquareArrowUpRight size={24} />
         </Link>
       </div>

@@ -12,18 +12,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 type Props = {
-  className?: string;
   limit?: number;
 }
-export function CustomPagination({ className, limit = 5 }: Props) {
+export function CustomPagination({ limit = 5 }: Props) {
 
   const router = useRouter()
   const pathname = usePathname()
-
-  
   const searchParams = useSearchParams()
 
-  const currentPage = searchParams?.get('page') || '0'
+  const currentPage = searchParams?.get('page') || '1'
 
 
   const createQueryString = React.useCallback((name: string, value: string) => {
@@ -41,6 +38,9 @@ export function CustomPagination({ className, limit = 5 }: Props) {
     router.push(`${pathname}?${createQueryString('page', page.toString())}`, { scroll: false })
   }
 
+  const isLastPage = currentPage && parseInt(currentPage) === limit
+  const isFirstPage = currentPage && parseInt(currentPage) === 1
+
   const handleNext = () => {
     const page = currentPage && parseInt(currentPage) < limit ? parseInt(currentPage) + 1 : limit
     router.push(`${pathname}?${createQueryString('page', page.toString())}`, { scroll: false })
@@ -52,13 +52,14 @@ export function CustomPagination({ className, limit = 5 }: Props) {
       <Pagination>
         <PaginationContent>
           
-          <PaginationItem className='cursor-pointer'>
-            <PaginationPrevious 
+          <PaginationItem className={isFirstPage ? 'cursor-not-allowed': 'cursor-pointer'}
+            aria-disabled={isFirstPage ? true : false}>
+            <PaginationPrevious aria-disabled={isFirstPage ? true : false}
             onClick={handlePrevious}
             />
           </PaginationItem>
 
-          {
+          {/* {
             Array.from({ length: limit }).map((_, index) => (
               <PaginationItem key={index}>
                 <PaginationLink className='cursor-pointer'  isActive={currentPage === (index + 1).toString()}
@@ -66,30 +67,27 @@ export function CustomPagination({ className, limit = 5 }: Props) {
                 >{index + 1}</PaginationLink>
               </PaginationItem>
             ))
-          }
-
-
-          {/* <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
+          } */}
           <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem> */}
+            {/* <PaginationEllipsis /> */}
 
+            <div className='flex space-x-2 px-4 border-x'>
+              <span>
+                {currentPage } of {limit}
+              </span>
+            </div>
 
-          <PaginationItem>
-            <PaginationEllipsis />
           </PaginationItem>
-          <PaginationItem className='cursor-pointer'>
+
+          <PaginationItem className={isLastPage ? 'cursor-not-allowed': 'cursor-pointer'}
+            aria-disabled={isLastPage ? true : false}
+          >
             <PaginationNext 
+              aria-disabled={isLastPage ? true : false}
               onClick={handleNext}
             />
           </PaginationItem>
+
         </PaginationContent>
       </Pagination>
     </div>

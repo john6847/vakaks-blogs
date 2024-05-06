@@ -4,15 +4,16 @@ import Image from 'next/image'
 import React, { Suspense } from 'react'
 import defImg from '@/public/images/software-developer-post-1.jpeg'
 import { CalendarDays, Tags } from 'lucide-react'
-import { generateJsonLd, isValidUrl } from '@/helpers'
+import { generateBlogPostingJsonLd, isValidUrl } from '@/helpers'
 import Link from 'next/link'
 import NewsLetter from '@/components/newsletter/news-letter'
 import { headers } from 'next/headers'
-import { revalidateTag } from 'next/cache'
 import { SocialMediaIcon } from '@/components/ui/icons/social-media-icon'
 import SharedOptions from '@/components/share/shared-options'
 import { Metadata, ResolvingMetadata } from 'next'
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
+
 const getBlogById = async (id: string) => {
   const url = `${baseUrl}/api/blogs/${id}`
   const response = await fetch(url, {
@@ -32,10 +33,8 @@ const getBlogById = async (id: string) => {
 }
 
 
-
-
 type Props = {
-  params: { blogId: string }
+  params: { articleId: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
  
@@ -45,11 +44,12 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.blogId
+  const id = params.articleId
   const blog:Blog = await getBlogById(id)
  
   return {
     title: blog.title,
+    bookmarks: "VAKAKS - " + blog.title,
     description: blog.shortDescription,
     category: blog.categories.join(', '),
     keywords: blog.categories,
@@ -78,22 +78,21 @@ export async function generateMetadata(
   }
 }
 
-export default async function page({ params }: { params: { blogId: string } }) {
+export default async function page({ params }: { params: { articleId: string } }) {
 
-  const { blogId } = params
+  const { articleId } = params
   
-  const blog: Blog = await getBlogById(blogId)
+  const blog: Blog = await getBlogById(articleId)
 
-  const jsonLd = generateJsonLd(blog)
-
+  // SEO
+  const jsonLd = generateBlogPostingJsonLd(blog)
   
 
   if(!blog) return <div className='mx-auto container space-y-4 text-center text-xl py-32'>
     <h1>Blog Not Found</h1>
     <p>Sorry, the blog you are looking for does not exist</p>
-    <Link href='/blogs'
+    <Link href='/articles'
       className='underline underline-offset-4 block w-fit mx-auto my-8 transition-3'> Back to Blogs</Link>
-
   </div>
 
   const getDate = () => {
@@ -109,25 +108,20 @@ export default async function page({ params }: { params: { blogId: string } }) {
   }
 
 
-  const handleLike = async () => {
-    "use server"
-    revalidateTag(`blogs-${blogId}`)
-  }
-
-
   return (
     <main className='mb-8 grid sm:gap-8 gap-4 pb-8'>
+
+      <Suspense fallback={<LoadindSkeleton />}>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <Suspense fallback={<LoadindSkeleton />}>
-
+      
         <div className='-mt-40 pt-40 grid place-items-center bg-accent sm:min-h-[30rem] min-h-[25rem] w-full texture-polka-dots'>
           <div className='2xl:container 2xl:mx-auto sm:p-8 p-4 -mb-10'>
             <div className='relative'>
-              <h1 className='sm:text-7xl text-2xl max-w-4xl font-semibold text-center col-span-3'>
+              <h1 className='sm:text-5xl text-2xl max-w-4xl font-semibold text-center col-span-3'>
                 {blog.title}
               </h1>
               <div className='flex flex-wrap justify-center items-center mt-4 text-xs '>
@@ -163,12 +157,12 @@ export default async function page({ params }: { params: { blogId: string } }) {
           <hr className='w-full border-dashed border-accent rounded-full max-w-7xl mx-auto border-b-8 bg-transparent border-0 mb-8' />
 
         </article>
-        <SharedOptions url={`${baseUrl}/blogs/${blogId}`} title={blog.title} description={blog.shortDescription} category={blog.categories}/>
+        <SharedOptions url={`${baseUrl}/articles/${articleId}`} title={blog.title} description={blog.shortDescription} category={blog.categories}/>
       </Suspense>
 
       <Suspense>
         {blog.content && <div className='relative overflow-hidden whitespace-pre-wrap sm:mx-auto mx-2 max-w-7xl'>
-          <pre className='html-content whitespace-pre-wrap font-sans' suppressHydrationWarning dangerouslySetInnerHTML={{ __html: blog.content }} />
+          <pre className='html-content whitespace-pre-wrap font-sans' dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>}
       </Suspense>
 
@@ -210,7 +204,7 @@ const AuthorProfile = ({ blog }: { blog: Blog }) => {
 
   return (
     <div className='relative mx-8 p-8 w-full flex justify-center items-center rounded-lg'>
-      <div className='bg-accent rounded-xl p-4 sm:gap-4 gap-2 flex sm:flex-row flex-col items-center sm:justify-start justify-center w-fit'>
+      <div className='bg-accent rounded-xl sm:p-4 p-6 sm:gap-4 gap-2 flex sm:flex-row flex-col items-center sm:justify-start justify-center w-fit'>
         <Image loading='lazy'
           src={profileImg()}
           alt={blog.author.displayName || 'author'}

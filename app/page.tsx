@@ -9,8 +9,7 @@ import { Suspense } from 'react';
 import { getCategories } from '@/lib/services/categories/actions';
 import OurStaff from '@/components/staff/our-staff';
 import SocialMedia from '@/components/social-media/social-media';
-
-
+import { generateBlogPostingJsonLd } from '@/helpers';
 
 
 export default async function page({ searchParams }: SearchParams) {
@@ -20,12 +19,22 @@ export default async function page({ searchParams }: SearchParams) {
   const navLinks = await getCategories()
   navLinks.unshift('All')
 
+
+  const jsonLdSEO=()=>{
+    if (blogs.length > 0) {
+      const jsonLd = generateBlogPostingJsonLd(blogs[0])
+      return jsonLd
+    }
+  }
+
   return (
-      <Suspense fallback={<main className='2xl:container mx-auto'>
-        <div className='grid place-items-center h-screen'>
-          <h1 className='text-3xl font-semibold font-sans'>Loading...</h1>
-        </div>
-      </main>}>
+      <Suspense>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSEO()) }}
+        />
+
+
         <Image src={bannerImg} alt='hero' priority
           width={1920} height={1270}
           className='absolute min-h-[35rem] h-[50vh] w-full rounded-b-3xl -z-0 top-0 bottom-0 left-0 right-0 object-cover object-center 2xl:object-bottom' />

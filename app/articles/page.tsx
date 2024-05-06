@@ -2,7 +2,7 @@ import BlogCard from '@/components/blog/blog-card'
 import { BlogSkeleton } from '@/components/blog/blog-skeleton'
 import SearchAndSort from '@/components/blog/search-and-sort'
 import { CustomPagination } from '@/components/pagination/custom-pagination'
-import { getBlogsByCategory } from '@/lib/services/blogs/actions'
+import { getBlogsByCategory, numberOfBlogs } from '@/lib/services/blogs/actions'
 import { Blog } from '@/lib/services/blogs/type'
 import { getCategories } from '@/lib/services/categories/actions'
 import { SearchParams } from '@/types'
@@ -16,8 +16,8 @@ export default async function page({ searchParams }: SearchParams) {
   navLinks.unshift('All')
 
   const order = sort==="asc" ? sort : 'desc'
-
-  const numPage = page ? parseInt(page) : 8
+  const totalAvailable = await numberOfBlogs()
+  const numPage = page ? parseInt(page)*8 : 8
 
   const blogs: Blog[] = await getBlogsByCategory(category, numPage, order)
 
@@ -32,7 +32,7 @@ export default async function page({ searchParams }: SearchParams) {
 
         <Suspense fallback={<BlogSkeleton />}>
           <div className='space-y-4'>
-            <h2 className='text-xl font-light mt-8'>Search and Sort Blogs</h2>
+            <h2 className='text-2xl font-normal mt-8'>Search and Sort Blogs</h2>
             <SearchAndSort navLinks={navLinks}/>
           </div>
 
@@ -42,12 +42,22 @@ export default async function page({ searchParams }: SearchParams) {
                 <BlogCard key={blog.id} blog={blog} />
               ))
             }
+
+            
           </div>
+
+          {
+              blogs.length === 0 && <h2 className='text-center italic opacity-80 mx-auto my-16 h-full font-light text-xl'>No Blogs Found...</h2>
+            }
         </Suspense>
       </div>
-      <div className='2xl:container flex justify-center items-center -mt-16 mb-16'>
-        <CustomPagination limit={8}/>
-      </div>
+      <Suspense>
+        <div className='2xl:container flex justify-center items-center -mt-16 mb-16'>
+          <CustomPagination limit={
+            Math.ceil(totalAvailable/4)
+          }/>
+        </div>
+      </Suspense>
     </main>
   )
 }

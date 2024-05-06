@@ -56,11 +56,10 @@ export default function SearchAndSort({ navLinks }: Props) {
   return (
     <div className='flex flex-wrap justify-between gap-x-8 gap-y-4 w-full bg-accent rounded-md sm:p-6 p-4 '>
       <div className='flex flex-wrap gap-x-8 gap-y-4 items-center'>
-        <div className='flex gap-4 items-center'>
-          <span className='block text-sm font-semibold'>Sort By:</span>
-          <select name="sort" id="sort"
-            value={sort} onChange={(e) => handleSort(e.target.value)}
-            className='bg-accent text-accent-foreground'>
+        <div className='flex items-center gap-2 rounded-md px-2 py-1 border bg-background'>
+          <span className='block text-sm font-normal opacity-60'>Sort By:</span>
+          <select name="sort" id="sort" value={sort} onChange={(e) => handleSort(e.target.value)}
+            className='bg-background text-sm text-accent-foreground border-none outline-none ring-0'>
             <option value="default">
               Default
             </option>
@@ -72,11 +71,12 @@ export default function SearchAndSort({ navLinks }: Props) {
             </option>
           </select>
         </div>
-        <div className='flex gap-4 items-center'>
-          <span className='block text-sm font-semibold'>Category:</span>
+
+        <div className='flex items-center gap-2 rounded-md px-2 py-1 border bg-background'>
+          <span className='block text-sm font-normal opacity-60'>Category:</span>
           <select name="category" id="category"
             value={searchParams?.get('category') || 'all'} onChange={(e) => handleCategory(e.target.value)}
-            className='bg-accent text-accent-foreground'>
+            className='bg-background text-sm text-accent-foreground border-none outline-none ring-0'>
             {
               navLinks.map((link: string) => (
                 <option className='capitalize' key={link} value={link.toLowerCase()}>{link}</option>
@@ -85,13 +85,13 @@ export default function SearchAndSort({ navLinks }: Props) {
           </select>
         </div>
       </div>
-      <div className='flex gap-2 items-baseline'>
+      {/* <div className='flex gap-2 items-baseline'>
         <span className='block text-sm font-semibold'>Search:</span>
         <input type="text"
           placeholder='Search by title...'
           onChange={handleSearch}
           className='bg-accent text-accent-foreground border-foreground border-opacity-50 border px-2 py-1 outline-none rounded-sm' />
-      </div>
+      </div> */}
     </div>
   )
 }

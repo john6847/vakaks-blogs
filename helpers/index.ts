@@ -35,24 +35,19 @@ const getDate = (blogDate:any) => {
   return date.toDateString()
 }
 
-export const generateJsonLd = (blog: Blog) => {
+export const generateBlogPostingJsonLd = (blog: Blog) => {
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://blogs.vakaks.com/blogs/" + blog.id
+      "@id": "https://blogs.vakaks.com/articles/" + blog.id
     },
     "headline": blog.title,
     "datePublished": getDate(blog.publishedAt),
     "dateModified": getDate(blog.updatedAt),
     "description": blog.shortDescription,
-    "image": {
-      "@type": "ImageObject",
-      "url": blog.cover,
-      "width": 1080,
-      "height": 1080
-    },
+    "image": [blog.cover],
     "author": {
       "@type": "Person",
       "name": blog.author?.displayName || 'Vakaks',

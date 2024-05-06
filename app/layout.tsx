@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import OtherProvider from '@/components/other-provider';
 import AuthProvider from './auth-provider';
 import PublicLayout from './publicLayout';
+import { siteDescription } from '@/lib/config/constants';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,13 +27,21 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   title: "Blog - VAKAKS",
-  description: "A blog about web development, programming, and more.",
+  description: siteDescription,
+  category: "web development, programming, javascript, react, next.js, css, html, software development, technology, blog, vakaks, joseph watson, john jerry cosky bien-aime, joe watson, cosky bien aime, joe watson sbf, jerry bien aime, sbf, joe",
+  twitter: {
+    site: "@vakaks",
+    card: "summary_large_image",
+    description: siteDescription,
+  },
   authors: [
     {
-      name: "JOSEPH WATZSON"
+      name: "Joseph Watzson",
+      url: "https://www.linkedin.com/in/joseph-watzson"
     },
     {
-      name: "John Jerry Cosky Bien-Aimé"
+      name: "John Jerry Bien-aime",
+      url: "https://www.linkedin.com/in/john-jerry-bien-aime-650582124"
     }
   ],
   keywords: [
@@ -46,6 +55,17 @@ export const metadata: Metadata = {
     "joe watson sbf", "jerry bien aime",
     "sbf", "joe"
   ],
+  bookmarks: "VAKAKS - Blog",
+  openGraph: {
+    siteName: "VAKAKS Blogs",
+    description: siteDescription,
+    type: "website",
+    title: "Blog - VAKAKS",
+    url: "https://blogs.vakaks.com",
+    locale: "en_US",
+  },
+  robots: "index, follow",
+  publisher: "VAKAKS"
 };
 
 const isDevMode = process.env.NODE_ENV === "development";

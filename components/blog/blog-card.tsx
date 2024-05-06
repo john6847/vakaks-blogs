@@ -12,7 +12,7 @@ type Props = {
 export default function BlogCard({ blog, className }: Props) {
   return (
     <div className={cn('bg-accent overflow-hidden rounded-xl p-2 fade-in ', className)}>
-      <Link href={`/blogs/${blog.id}`} className='block h-52 relative overflow-hidden'>
+      <Link href={`/articles/${blog.id}`} className='block h-52 relative overflow-hidden'>
         <Image
           src={blog.cover} loading='lazy'
           alt="Blog Cover"
@@ -27,7 +27,7 @@ export default function BlogCard({ blog, className }: Props) {
         <div className='py-2 sm:h-full flex justify-between flex-col'>
           <div>
             <h1 className='leading-tight font-sans text-lg m-0 line-clamp-2'>
-              <Link href={`/blogs/${blog.id}`}>
+              <Link href={`/articles/${blog.id}`}>
                 {blog.title}
               </Link>
             </h1>
@@ -35,16 +35,11 @@ export default function BlogCard({ blog, className }: Props) {
               {blog.shortDescription}
             </p>
           </div>
-          <Link href={`/blogs/${blog.id}`} className='flex mt-4 justify-center items-center gap-1 hover:gap-2 w-full transition-5 bg-background text-foreground text-center rounded-md p-2'>
+          <Link href={`/articles/${blog.id}`} className='flex mt-4 justify-center items-center gap-1 hover:gap-2 w-full transition-5 bg-background text-foreground text-center rounded-md p-2'>
             Read More <ArrowRight size={20} className='transition-10'/>
           </Link>
         </div>
-
-{/*         <div className='pt-2 h-full grid place-items-end '>
-        </div>
- */}
       </div>
-
     </div>
   );
 }
