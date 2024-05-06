@@ -38,8 +38,8 @@ export default function SharedOptions({ url, title, description, category }: Pro
 
       <WhatsappShareButton
         url={url}
-        title={title}
-        separator=":: "
+        title={`*${title}*\n\n${description}\n\n${tags}`}
+        separator="\n"
       >
         <WhatsappIcon size={30} round />
       </WhatsappShareButton>
